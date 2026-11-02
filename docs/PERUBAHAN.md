@@ -2,6 +2,15 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.2.0 — Matematika Level 1–3 (2026-11-02)
+### Ditambahkan
+- Tantangan **CountPick** (Matematika L1–3, Step 1 "Mengenal Angka 1–20"): pilih kelompok apel yang jumlahnya sama dengan angka soal. Rentang naik per level: L1 = 1–5, L2 = 1–10, L3 = 1–20.
+- 3 pilihan berbeda per soal; target tidak berulang beruntun; pilihan salah meredup dan memunculkan petunjuk "hitung satu per satu".
+- Tes pembangkit soal `makeCountQuestions` dan tes aturan buka-kunci baru.
+
+### Berubah
+- Matematika kini dimulai dari Level 1; Level 4 baru terbuka setelah Level 3 selesai (sebelumnya terbuka sejak awal). Level Inggris 9 tetap terbuka sejak awal karena Level 1–8 belum tersedia.
+
 ## v0.1.0 — Irisan vertikal (2026-11-02)
 ### Ditambahkan
 - Scaffold: Vite + React 18 + TypeScript + Tailwind + Framer Motion + PWA (precache aset, manifest, ikon SVG).
@@ -27,10 +36,10 @@ Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini
 | Phaser/Framer Motion | Hanya Framer Motion (DOM) | Game berbasis UI; lebih mudah diakses & dirawat |
 
 ### Catatan perilaku sementara
-- Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (Matematika L4 dan Inggris L9 terbuka sejak awal). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
+- Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini Inggris L9 terbuka sejak awal). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Tantangan: CountPick (M L1–3), Pairing/Matching Inggris (L1–8), pengurangan balon, bentuk, jam, pecahan.
+1. Tantangan: Pairing/Matching Inggris (L1–8), pengurangan balon, bentuk, jam, pecahan.
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).

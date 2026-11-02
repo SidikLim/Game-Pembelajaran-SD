@@ -17,6 +17,22 @@ export function makeSumQuestions(rng: Rng, count: number, maxSum: number): SumQu
   return out;
 }
 
+export interface CountQuestion { target: number; options: number[] }
+
+/** Soal "pilih kelompok berjumlah N": 3 pilihan berbeda dalam 1..max, target tak sama dengan soal sebelumnya. */
+export function makeCountQuestions(rng: Rng, count: number, max: number): CountQuestion[] {
+  const out: CountQuestion[] = [];
+  while (out.length < count) {
+    const target = randInt(rng, 1, max);
+    if (out.length && out[out.length - 1].target === target && max > 1) continue;
+    const opts = new Set<number>([target]);
+    const want = Math.min(3, max);
+    while (opts.size < want) opts.add(randInt(rng, 1, max));
+    out.push({ target, options: shuffle(rng, [...opts]) });
+  }
+  return out;
+}
+
 export interface WordEntry { word: string; emoji: string; id: string }
 
 export const WORDS: WordEntry[] = [

@@ -1,5 +1,5 @@
 export type Subject = 'math' | 'english';
-export type ChallengeType = 'dragSum' | 'spellingBee' | 'comingSoon';
+export type ChallengeType = 'countPick' | 'dragSum' | 'spellingBee' | 'comingSoon';
 
 export interface LevelConfig {
   id: number; // 1..30
@@ -11,7 +11,7 @@ export interface LevelConfig {
   challenge: ChallengeType;
   questions: number;
   /** Parameter khusus tantangan (mis. batas jumlah, panjang kata). */
-  params: { maxSum?: number; wordLength?: number };
+  params: { maxSum?: number; wordLength?: number; maxCount?: number };
 }
 
 export interface LevelResult {

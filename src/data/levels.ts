@@ -13,7 +13,7 @@ interface StepDef {
 }
 
 const MATH: StepDef[] = [
-  { tier: 1, step: 1, from: 1, to: 3, title: 'Mengenal Angka 1–20', goal: 'Pilih kelompok apel dengan jumlah yang tepat', challenge: 'comingSoon' },
+  { tier: 1, step: 1, from: 1, to: 3, title: 'Mengenal Angka 1–20', goal: 'Pilih kelompok apel dengan jumlah yang tepat', challenge: 'countPick', params: [{ maxCount: 5 }, { maxCount: 10 }, { maxCount: 20 }] },
   { tier: 1, step: 2, from: 4, to: 6, title: 'Menjumlah di Keranjang', goal: 'Seret buah ke keranjang sesuai hasil penjumlahan', challenge: 'dragSum', params: [{ maxSum: 5 }, { maxSum: 8 }, { maxSum: 10 }] },
   { tier: 1, step: 3, from: 7, to: 8, title: 'Mengurang dengan Balon', goal: 'Pecahkan balon untuk mengurangi', challenge: 'comingSoon' },
   { tier: 1, step: 4, from: 9, to: 10, title: 'Puzzle Bentuk', goal: 'Pasangkan lingkaran, persegi, segitiga', challenge: 'comingSoon' },

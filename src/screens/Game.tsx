@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CountPick } from '../challenges/CountPick';
 import { DragSum } from '../challenges/DragSum';
 import { SpellingBee } from '../challenges/SpellingBee';
 import type { ChallengeProps } from '../challenges/types';
@@ -8,7 +9,7 @@ import { comboLabel } from '../lib/scoring';
 import { sfx } from '../lib/audio';
 import type { HatColor, LevelConfig, MascotState, RunStats } from '../lib/types';
 
-const CHALLENGES: Record<string, (p: ChallengeProps) => JSX.Element> = { dragSum: DragSum, spellingBee: SpellingBee };
+const CHALLENGES: Record<string, (p: ChallengeProps) => JSX.Element> = { countPick: CountPick, dragSum: DragSum, spellingBee: SpellingBee };
 
 interface Props { level: LevelConfig; hat: HatColor; onFinish: (stats: RunStats) => void; onExit: () => void }
 

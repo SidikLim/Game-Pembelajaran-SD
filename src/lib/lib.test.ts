@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { seeded } from './random';
-import { makeSpellQuestions, makeSumQuestions, scramble } from './questions';
+import { makeCountQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
 import { scoreFor, starsFor } from './scoring';
 import { isUnlocked, recordResult } from './progress';
 import type { Profile } from './types';
@@ -24,6 +24,22 @@ describe('soal penjumlahan', () => {
     const a = JSON.stringify(makeSumQuestions(seeded(1), 5, 10));
     const b = JSON.stringify(makeSumQuestions(seeded(2), 5, 10));
     expect(a).not.toBe(b);
+  });
+});
+
+describe('soal mengenal angka', () => {
+  it('target dalam batas, 3 pilihan berbeda memuat target, tak berulang beruntun', () => {
+    for (let seed = 1; seed <= 50; seed++) {
+      const qs = makeCountQuestions(seeded(seed), 5, 20);
+      qs.forEach((q, i) => {
+        expect(q.target).toBeGreaterThanOrEqual(1);
+        expect(q.target).toBeLessThanOrEqual(20);
+        expect(q.options).toHaveLength(3);
+        expect(new Set(q.options).size).toBe(3);
+        expect(q.options).toContain(q.target);
+        if (i) expect(q.target).not.toBe(qs[i - 1].target);
+      });
+    }
   });
 });
 
@@ -55,9 +71,14 @@ describe('skor & bintang', () => {
 });
 
 describe('progres', () => {
-  it('level 4 matematika terbuka karena level 1-3 belum tersedia', () => {
-    expect(isUnlocked(profile(), 'math', 4)).toBe(true);
-    expect(isUnlocked(profile(), 'math', 5)).toBe(false);
+  it('matematika mulai dari level 1; level 4 baru terbuka setelah level 3 selesai', () => {
+    expect(isUnlocked(profile(), 'math', 1)).toBe(true);
+    expect(isUnlocked(profile(), 'math', 2)).toBe(false);
+    expect(isUnlocked(profile(), 'math', 4)).toBe(false);
+    expect(isUnlocked(recordResult(profile(), 'math', 3, 1, 100), 'math', 4)).toBe(true);
+  });
+  it('inggris level 9 terbuka sejak awal karena level 1-8 belum tersedia', () => {
+    expect(isUnlocked(profile(), 'english', 9)).toBe(true);
   });
   it('menyelesaikan level membuka level berikutnya; hasil terbaik tak turun', () => {
     let p = recordResult(profile(), 'math', 4, 3, 500);
