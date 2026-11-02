@@ -1,3 +1,4 @@
+import { ANIMALS, COLORS, FRUITS, LETTERS, LETTER_WORDS, NUMBERS, type PoolName, type VocabItem } from '../data/vocab';
 import { randInt, shuffle, type Rng } from './random';
 
 export interface SumQuestion { a: number; b: number; answer: number }
@@ -61,4 +62,65 @@ export function scramble(rng: Rng, word: string): string[] {
 export function makeSpellQuestions(rng: Rng, count: number, wordLength: number): SpellQuestion[] {
   const pool = shuffle(rng, WORDS.filter((w) => w.word.length === wordLength));
   return pool.slice(0, count).map((entry) => ({ entry, letters: scramble(rng, entry.word) }));
+}
+
+export interface PickOption { id: string; text?: string; emoji?: string; color?: string; count?: number; speak: string }
+export interface PickQuestion {
+  /** Teks soal yang ditampilkan (kosong untuk soal mendengarkan huruf). */
+  promptText?: string;
+  /** Kalimat yang diucapkan tombol 🔊. */
+  speak: string;
+  options: PickOption[];
+  answerId: string;
+  /** Petunjuk setelah anak salah. */
+  hint: string;
+}
+
+const asOption = (v: VocabItem): PickOption => ({ id: v.id, emoji: v.emoji, color: v.color, count: v.count, speak: v.word });
+
+function poolItems(pool: Exclude<PoolName, 'letters'>): VocabItem[] {
+  switch (pool) {
+    case 'animals': return ANIMALS;
+    case 'colors': return COLORS;
+    case 'animalsColors': return [...ANIMALS, ...COLORS];
+    case 'numbers': return NUMBERS;
+    case 'numbersFruits': return [...NUMBERS, ...FRUITS];
+  }
+}
+
+/** Soal pilih-yang-cocok: huruf (dengar -> pilih huruf) atau kata (baca/dengar -> pilih gambar). */
+export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optionCount: number, letterCount = 26): PickQuestion[] {
+  const out: PickQuestion[] = [];
+  let lastId = '';
+  const ids = pool === 'letters' ? LETTERS.slice(0, letterCount) : poolItems(pool).map((i) => i.id);
+  while (out.length < count) {
+    const answerId = ids[randInt(rng, 0, ids.length - 1)];
+    if (answerId === lastId && ids.length > 1) continue;
+    lastId = answerId;
+    if (pool === 'letters') {
+      const lw = LETTER_WORDS[answerId];
+      const others = shuffle(rng, ids.filter((l) => l !== answerId)).slice(0, optionCount - 1);
+      out.push({
+        speak: `${answerId}. ${lw.word}`,
+        options: shuffle(rng, [answerId, ...others]).map((l) => ({ id: l, text: l, speak: l })),
+        answerId,
+        hint: `Huruf ini ada di kata ${lw.word.toUpperCase()} ${lw.emoji}`,
+      });
+    } else {
+      const items = poolItems(pool);
+      const answer = items.find((i) => i.id === answerId)!;
+      // Pilihan sejenis dengan jawaban (mis. angka dengan angka) agar adil.
+      const kind = (i: VocabItem) => (i.count ? 'n' : i.color ? 'c' : 'e');
+      const sameKind = items.filter((i) => i.id !== answerId && (pool !== 'numbersFruits' && pool !== 'animalsColors' ? true : kind(i) === kind(answer)));
+      const others = shuffle(rng, sameKind).slice(0, optionCount - 1);
+      out.push({
+        promptText: answer.word.toUpperCase(),
+        speak: answer.word,
+        options: shuffle(rng, [answer, ...others]).map(asOption),
+        answerId,
+        hint: 'Tekan 🔊 untuk mendengar kata, lalu ketuk gambar untuk mendengar namanya',
+      });
+    }
+  }
+  return out;
 }

@@ -27,9 +27,9 @@ const MATH: StepDef[] = [
 ];
 
 const ENGLISH: StepDef[] = [
-  { tier: 1, step: 1, from: 1, to: 3, title: 'Phonics & Alphabet', goal: 'Dengar bunyi, cocokkan huruf', challenge: 'comingSoon' },
-  { tier: 1, step: 2, from: 4, to: 6, title: 'Animals & Colors', goal: 'Sentuh gambar, dengar katanya', challenge: 'comingSoon' },
-  { tier: 1, step: 3, from: 7, to: 8, title: 'Numbers & Fruits', goal: 'Cocokkan teks dengan gambar', challenge: 'comingSoon' },
+  { tier: 1, step: 1, from: 1, to: 3, title: 'Phonics & Alphabet', goal: 'Dengar bunyi, cocokkan huruf', challenge: 'pickMatch', params: [{ pool: 'letters', letterCount: 6, options: 3 }, { pool: 'letters', letterCount: 14, options: 3 }, { pool: 'letters', letterCount: 26, options: 4 }] },
+  { tier: 1, step: 2, from: 4, to: 6, title: 'Animals & Colors', goal: 'Sentuh gambar, dengar katanya', challenge: 'pickMatch', params: [{ pool: 'animals', options: 3 }, { pool: 'colors', options: 3 }, { pool: 'animalsColors', options: 4 }] },
+  { tier: 1, step: 3, from: 7, to: 8, title: 'Numbers & Fruits', goal: 'Cocokkan teks dengan gambar', challenge: 'pickMatch', params: [{ pool: 'numbers', options: 3 }, { pool: 'numbersFruits', options: 4 }] },
   { tier: 1, step: 4, from: 9, to: 10, title: 'Spelling Bee', goal: 'Susun huruf acak menjadi kata', challenge: 'spellingBee', params: [{ wordLength: 3 }, { wordLength: 4 }] },
   { tier: 2, step: 5, from: 11, to: 13, title: 'Family & Body Parts', goal: 'Kenali anggota keluarga dan tubuh', challenge: 'comingSoon' },
   { tier: 2, step: 6, from: 14, to: 16, title: 'Spelling Bee 5–7 Huruf', goal: 'Susun kata yang lebih panjang', challenge: 'comingSoon' },
