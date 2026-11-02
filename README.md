@@ -18,8 +18,10 @@ Setelah di-deploy: https://sidiklim.github.io/Game-Pembelajaran-SD/ (Settings �
 React 18 + TypeScript + Vite, Tailwind CSS, Framer Motion, `vite-plugin-pwa`, `idb-keyval` (IndexedDB, cadangan localStorage). Tanpa backend.
 
 ## Status: irisan vertikal (v0.2)
-Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 4 tantangan:
+Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 6 tantangan:
 - **Matematika L1–3** — mengenal angka, pilih kelompok apel (`CountPick`)
+- **Matematika L7–8** — pengurangan dengan memecahkan balon (`BalloonSub`)
+- **Matematika L9–10** — puzzle bentuk lingkaran/persegi/segitiga (`ShapePuzzle`)
 - **Matematika L4–6** — penjumlahan seret-ke-keranjang (`DragSum`)
 - **Inggris L1–8** — dengar/baca lalu pilih huruf atau gambar (`PickMatch`)
 - **Inggris L9–10** — Spelling Bee (`SpellingBee`)

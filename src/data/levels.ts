@@ -10,13 +10,15 @@ interface StepDef {
   challenge: ChallengeType;
   /** Parameter tiap level dalam step (opsional), diindeks dari level pertama step. */
   params?: LevelConfig['params'][];
+  /** Jumlah soal per level (bawaan 5). */
+  questions?: number;
 }
 
 const MATH: StepDef[] = [
   { tier: 1, step: 1, from: 1, to: 3, title: 'Mengenal Angka 1–20', goal: 'Pilih kelompok apel dengan jumlah yang tepat', challenge: 'countPick', params: [{ maxCount: 5 }, { maxCount: 10 }, { maxCount: 20 }] },
   { tier: 1, step: 2, from: 4, to: 6, title: 'Menjumlah di Keranjang', goal: 'Seret buah ke keranjang sesuai hasil penjumlahan', challenge: 'dragSum', params: [{ maxSum: 5 }, { maxSum: 8 }, { maxSum: 10 }] },
-  { tier: 1, step: 3, from: 7, to: 8, title: 'Mengurang dengan Balon', goal: 'Pecahkan balon untuk mengurangi', challenge: 'comingSoon' },
-  { tier: 1, step: 4, from: 9, to: 10, title: 'Puzzle Bentuk', goal: 'Pasangkan lingkaran, persegi, segitiga', challenge: 'comingSoon' },
+  { tier: 1, step: 3, from: 7, to: 8, title: 'Mengurang dengan Balon', goal: 'Pecahkan balon, lalu hitung sisanya', challenge: 'balloonSub', params: [{ maxMinuend: 5 }, { maxMinuend: 10 }] },
+  { tier: 1, step: 4, from: 9, to: 10, title: 'Puzzle Bentuk', goal: 'Pasangkan lingkaran, persegi, segitiga', challenge: 'shapePuzzle', questions: 3, params: [{ perShape: 1 }, { perShape: 2 }] },
   { tier: 2, step: 5, from: 11, to: 13, title: 'Perkalian Dasar', goal: 'Hitung kelompok gambar berulang', challenge: 'comingSoon' },
   { tier: 2, step: 6, from: 14, to: 16, title: 'Berbagi Rata', goal: 'Bagi rata ke beberapa piring', challenge: 'comingSoon' },
   { tier: 2, step: 7, from: 17, to: 18, title: 'Membaca Jam', goal: 'Hubungkan jarum jam dengan angka waktu', challenge: 'comingSoon' },
@@ -52,7 +54,7 @@ function build(subject: Subject, defs: StepDef[]): LevelConfig[] {
         title: d.title,
         goal: d.goal,
         challenge: d.challenge,
-        questions: 5,
+        questions: d.questions ?? 5,
         params: d.params?.[id - d.from] ?? {},
       });
     }

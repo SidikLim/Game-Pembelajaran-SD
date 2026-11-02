@@ -124,3 +124,40 @@ export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optio
   }
   return out;
 }
+
+export interface SubQuestion { a: number; b: number; answer: number; options: number[] }
+
+/** Pengurangan a - b dengan a <= maxMinuend dan hasil >= 1; 3 pilihan jawaban berbeda. */
+export function makeSubQuestions(rng: Rng, count: number, maxMinuend: number): SubQuestion[] {
+  const out: SubQuestion[] = [];
+  let guard = 0;
+  while (out.length < count && guard++ < 500) {
+    const a = randInt(rng, 2, maxMinuend);
+    const b = randInt(rng, 1, a - 1);
+    const prev = out[out.length - 1];
+    if (prev && prev.a === a && prev.b === b) continue;
+    const answer = a - b;
+    const opts = new Set<number>([answer]);
+    while (opts.size < 3) opts.add(randInt(rng, 0, maxMinuend));
+    out.push({ a, b, answer, options: shuffle(rng, [...opts]) });
+  }
+  return out;
+}
+
+export type ShapeKind = 'circle' | 'square' | 'triangle';
+export const SHAPES: ShapeKind[] = ['circle', 'square', 'triangle'];
+export const SHAPE_COLORS = ['#FF7A59', '#26C6DA', '#F6C453', '#4CC38A', '#8E6BE8', '#F48FB1'];
+export interface ShapePiece { id: number; shape: ShapeKind; color: string; size: number }
+
+/** Satu puzzle = `perShape` keping untuk tiap bentuk, diacak urutannya. */
+export function makeShapePuzzles(rng: Rng, count: number, perShape: number): ShapePiece[][] {
+  return Array.from({ length: count }, () => {
+    const pieces: ShapePiece[] = [];
+    SHAPES.forEach((shape) => {
+      for (let k = 0; k < perShape; k++) {
+        pieces.push({ id: pieces.length, shape, color: SHAPE_COLORS[randInt(rng, 0, SHAPE_COLORS.length - 1)], size: perShape > 1 ? randInt(rng, 52, 72) : 64 });
+      }
+    });
+    return shuffle(rng, pieces).map((p, i) => ({ ...p, id: i }));
+  });
+}

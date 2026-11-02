@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { seeded } from './random';
-import { makeCountQuestions, makePickQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
+import { makeCountQuestions, makePickQuestions, makeShapePuzzles, makeSubQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
 import { scoreFor, starsFor } from './scoring';
 import { isUnlocked, recordResult } from './progress';
 import type { Profile } from './types';
@@ -69,6 +69,33 @@ describe('soal pilih-yang-cocok (Inggris L1-8)', () => {
         const isNum = (id: string) => /^n\d+$/.test(id);
         const kinds = new Set(q.options.map((o) => isNum(o.id)));
         expect(kinds.size).toBe(1);
+      });
+    }
+  });
+});
+
+describe('soal pengurangan balon', () => {
+  it('a - b selalu valid, hasil >= 1, pilihan unik memuat jawaban', () => {
+    for (let seed = 1; seed <= 50; seed++) {
+      makeSubQuestions(seeded(seed), 5, 10).forEach((q) => {
+        expect(q.a).toBeLessThanOrEqual(10);
+        expect(q.b).toBeGreaterThanOrEqual(1);
+        expect(q.answer).toBe(q.a - q.b);
+        expect(q.answer).toBeGreaterThanOrEqual(1);
+        expect(new Set(q.options).size).toBe(3);
+        expect(q.options).toContain(q.answer);
+      });
+    }
+  });
+});
+
+describe('puzzle bentuk', () => {
+  it('tiap bentuk muncul tepat perShape kali dengan id unik', () => {
+    for (const per of [1, 2]) {
+      makeShapePuzzles(seeded(7), 3, per).forEach((pieces) => {
+        expect(pieces).toHaveLength(3 * per);
+        expect(new Set(pieces.map((p) => p.id)).size).toBe(3 * per);
+        for (const shape of ['circle', 'square', 'triangle']) expect(pieces.filter((p) => p.shape === shape)).toHaveLength(per);
       });
     }
   });

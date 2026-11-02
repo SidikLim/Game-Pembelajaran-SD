@@ -2,6 +2,16 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.4.0 — Matematika Level 7–10 (2026-11-02)
+### Ditambahkan
+- **BalloonSub** (Matematika L7–8, "Mengurang dengan Balon"): anak memecahkan b balon dari a balon, lalu memilih jumlah yang tersisa dari 3 pilihan. L7 memakai a ≤ 5, L8 memakai a ≤ 10; hasil selalu ≥ 1. Petunjuk "hitung balon yang masih ada" muncul setelah 2 kali salah.
+- **ShapePuzzle** (Matematika L9–10, "Puzzle Bentuk"): seret keping ke siluet yang bentuknya sama (Lingkaran, Persegi, Segitiga). Siluet berdenyut saat didekati. L9 = 3 keping, L10 = 6 keping (2 per bentuk, warna dan ukuran bervariasi). Cadangan tanpa seret: ketuk keping lalu ketuk siluet. Setelah 2 kali salah, siluet yang benar bergetar sebagai petunjuk.
+- Jumlah soal per level bisa diatur per step (`questions` di `data/levels.ts`); Puzzle Bentuk memakai 3 soal per level karena tiap soal berisi beberapa keping.
+- Tes pembangkit soal pengurangan dan puzzle.
+
+### Berubah
+- Level Matematika 7–10 kini bisa dimainkan; Level 11 dan seterusnya masih "segera hadir".
+
 ## v0.3.0 — Bahasa Inggris Level 1–8 (2026-11-02)
 ### Ditambahkan
 - Tantangan **PickMatch** (satu komponen untuk 8 level Inggris), soal dibangkitkan dari kosakata di `src/data/vocab.ts`:
@@ -60,7 +70,7 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alam
 - Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini tidak ada level yang terdampak, aturan disiapkan untuk level berikutnya). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Tantangan: Inggris L11–20 (keluarga/tubuh, spelling 5–7 huruf, kata kerja, listening), pengurangan balon, bentuk, jam, pecahan.
+1. Tantangan: Matematika L11–20 (perkalian, pembagian, jam, pecahan) dan Inggris L11–20 (keluarga/tubuh, spelling 5–7 huruf, kata kerja, listening).
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).
