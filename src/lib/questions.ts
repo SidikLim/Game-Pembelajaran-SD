@@ -1,3 +1,4 @@
+import { ANIMALS, COLORS, FRUITS, LETTERS, LETTER_WORDS, NUMBERS, type PoolName, type VocabItem } from '../data/vocab';
 import { randInt, shuffle, type Rng } from './random';
 
 export interface SumQuestion { a: number; b: number; answer: number }
@@ -61,4 +62,102 @@ export function scramble(rng: Rng, word: string): string[] {
 export function makeSpellQuestions(rng: Rng, count: number, wordLength: number): SpellQuestion[] {
   const pool = shuffle(rng, WORDS.filter((w) => w.word.length === wordLength));
   return pool.slice(0, count).map((entry) => ({ entry, letters: scramble(rng, entry.word) }));
+}
+
+export interface PickOption { id: string; text?: string; emoji?: string; color?: string; count?: number; speak: string }
+export interface PickQuestion {
+  /** Teks soal yang ditampilkan (kosong untuk soal mendengarkan huruf). */
+  promptText?: string;
+  /** Kalimat yang diucapkan tombol 🔊. */
+  speak: string;
+  options: PickOption[];
+  answerId: string;
+  /** Petunjuk setelah anak salah. */
+  hint: string;
+}
+
+const asOption = (v: VocabItem): PickOption => ({ id: v.id, emoji: v.emoji, color: v.color, count: v.count, speak: v.word });
+
+function poolItems(pool: Exclude<PoolName, 'letters'>): VocabItem[] {
+  switch (pool) {
+    case 'animals': return ANIMALS;
+    case 'colors': return COLORS;
+    case 'animalsColors': return [...ANIMALS, ...COLORS];
+    case 'numbers': return NUMBERS;
+    case 'numbersFruits': return [...NUMBERS, ...FRUITS];
+  }
+}
+
+/** Soal pilih-yang-cocok: huruf (dengar -> pilih huruf) atau kata (baca/dengar -> pilih gambar). */
+export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optionCount: number, letterCount = 26): PickQuestion[] {
+  const out: PickQuestion[] = [];
+  let lastId = '';
+  const ids = pool === 'letters' ? LETTERS.slice(0, letterCount) : poolItems(pool).map((i) => i.id);
+  while (out.length < count) {
+    const answerId = ids[randInt(rng, 0, ids.length - 1)];
+    if (answerId === lastId && ids.length > 1) continue;
+    lastId = answerId;
+    if (pool === 'letters') {
+      const lw = LETTER_WORDS[answerId];
+      const others = shuffle(rng, ids.filter((l) => l !== answerId)).slice(0, optionCount - 1);
+      out.push({
+        speak: `${answerId}. ${lw.word}`,
+        options: shuffle(rng, [answerId, ...others]).map((l) => ({ id: l, text: l, speak: l })),
+        answerId,
+        hint: `Huruf ini ada di kata ${lw.word.toUpperCase()} ${lw.emoji}`,
+      });
+    } else {
+      const items = poolItems(pool);
+      const answer = items.find((i) => i.id === answerId)!;
+      // Pilihan sejenis dengan jawaban (mis. angka dengan angka) agar adil.
+      const kind = (i: VocabItem) => (i.count ? 'n' : i.color ? 'c' : 'e');
+      const sameKind = items.filter((i) => i.id !== answerId && (pool !== 'numbersFruits' && pool !== 'animalsColors' ? true : kind(i) === kind(answer)));
+      const others = shuffle(rng, sameKind).slice(0, optionCount - 1);
+      out.push({
+        promptText: answer.word.toUpperCase(),
+        speak: answer.word,
+        options: shuffle(rng, [answer, ...others]).map(asOption),
+        answerId,
+        hint: 'Tekan 🔊 untuk mendengar kata, lalu ketuk gambar untuk mendengar namanya',
+      });
+    }
+  }
+  return out;
+}
+
+export interface SubQuestion { a: number; b: number; answer: number; options: number[] }
+
+/** Pengurangan a - b dengan a <= maxMinuend dan hasil >= 1; 3 pilihan jawaban berbeda. */
+export function makeSubQuestions(rng: Rng, count: number, maxMinuend: number): SubQuestion[] {
+  const out: SubQuestion[] = [];
+  let guard = 0;
+  while (out.length < count && guard++ < 500) {
+    const a = randInt(rng, 2, maxMinuend);
+    const b = randInt(rng, 1, a - 1);
+    const prev = out[out.length - 1];
+    if (prev && prev.a === a && prev.b === b) continue;
+    const answer = a - b;
+    const opts = new Set<number>([answer]);
+    while (opts.size < 3) opts.add(randInt(rng, 0, maxMinuend));
+    out.push({ a, b, answer, options: shuffle(rng, [...opts]) });
+  }
+  return out;
+}
+
+export type ShapeKind = 'circle' | 'square' | 'triangle';
+export const SHAPES: ShapeKind[] = ['circle', 'square', 'triangle'];
+export const SHAPE_COLORS = ['#FF7A59', '#26C6DA', '#F6C453', '#4CC38A', '#8E6BE8', '#F48FB1'];
+export interface ShapePiece { id: number; shape: ShapeKind; color: string; size: number }
+
+/** Satu puzzle = `perShape` keping untuk tiap bentuk, diacak urutannya. */
+export function makeShapePuzzles(rng: Rng, count: number, perShape: number): ShapePiece[][] {
+  return Array.from({ length: count }, () => {
+    const pieces: ShapePiece[] = [];
+    SHAPES.forEach((shape) => {
+      for (let k = 0; k < perShape; k++) {
+        pieces.push({ id: pieces.length, shape, color: SHAPE_COLORS[randInt(rng, 0, SHAPE_COLORS.length - 1)], size: perShape > 1 ? randInt(rng, 52, 72) : 64 });
+      }
+    });
+    return shuffle(rng, pieces).map((p, i) => ({ ...p, id: i }));
+  });
 }

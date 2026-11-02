@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { seeded } from './random';
-import { makeCountQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
+import { makeCountQuestions, makePickQuestions, makeShapePuzzles, makeSubQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
 import { scoreFor, starsFor } from './scoring';
 import { isUnlocked, recordResult } from './progress';
 import type { Profile } from './types';
@@ -43,6 +43,64 @@ describe('soal mengenal angka', () => {
   });
 });
 
+describe('soal pilih-yang-cocok (Inggris L1-8)', () => {
+  const pools = ['letters', 'animals', 'colors', 'animalsColors', 'numbers', 'numbersFruits'] as const;
+  it('tiap pool: jumlah pilihan benar, unik, memuat jawaban, tak berulang beruntun', () => {
+    for (const pool of pools) {
+      for (let seed = 1; seed <= 30; seed++) {
+        const qs = makePickQuestions(seeded(seed), 5, pool, 4, 14);
+        qs.forEach((q, i) => {
+          expect(q.options).toHaveLength(4);
+          expect(new Set(q.options.map((o) => o.id)).size).toBe(4);
+          expect(q.options.map((o) => o.id)).toContain(q.answerId);
+          if (i) expect(q.answerId).not.toBe(qs[i - 1].answerId);
+        });
+      }
+    }
+  });
+  it('huruf dibatasi letterCount', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      makePickQuestions(seeded(seed), 5, 'letters', 3, 6).forEach((q) => q.options.forEach((o) => expect('ABCDEF').toContain(o.id)));
+    }
+  });
+  it('angka dan buah tidak dicampur dalam satu soal', () => {
+    for (let seed = 1; seed <= 50; seed++) {
+      makePickQuestions(seeded(seed), 5, 'numbersFruits', 4).forEach((q) => {
+        const isNum = (id: string) => /^n\d+$/.test(id);
+        const kinds = new Set(q.options.map((o) => isNum(o.id)));
+        expect(kinds.size).toBe(1);
+      });
+    }
+  });
+});
+
+describe('soal pengurangan balon', () => {
+  it('a - b selalu valid, hasil >= 1, pilihan unik memuat jawaban', () => {
+    for (let seed = 1; seed <= 50; seed++) {
+      makeSubQuestions(seeded(seed), 5, 10).forEach((q) => {
+        expect(q.a).toBeLessThanOrEqual(10);
+        expect(q.b).toBeGreaterThanOrEqual(1);
+        expect(q.answer).toBe(q.a - q.b);
+        expect(q.answer).toBeGreaterThanOrEqual(1);
+        expect(new Set(q.options).size).toBe(3);
+        expect(q.options).toContain(q.answer);
+      });
+    }
+  });
+});
+
+describe('puzzle bentuk', () => {
+  it('tiap bentuk muncul tepat perShape kali dengan id unik', () => {
+    for (const per of [1, 2]) {
+      makeShapePuzzles(seeded(7), 3, per).forEach((pieces) => {
+        expect(pieces).toHaveLength(3 * per);
+        expect(new Set(pieces.map((p) => p.id)).size).toBe(3 * per);
+        for (const shape of ['circle', 'square', 'triangle']) expect(pieces.filter((p) => p.shape === shape)).toHaveLength(per);
+      });
+    }
+  });
+});
+
 describe('spelling bee', () => {
   it('huruf diacak berbeda dari kata asli', () => {
     for (let seed = 1; seed <= 50; seed++) {
@@ -77,8 +135,10 @@ describe('progres', () => {
     expect(isUnlocked(profile(), 'math', 4)).toBe(false);
     expect(isUnlocked(recordResult(profile(), 'math', 3, 1, 100), 'math', 4)).toBe(true);
   });
-  it('inggris level 9 terbuka sejak awal karena level 1-8 belum tersedia', () => {
-    expect(isUnlocked(profile(), 'english', 9)).toBe(true);
+  it('inggris mulai dari level 1; level 9 baru terbuka setelah level 8 selesai', () => {
+    expect(isUnlocked(profile(), 'english', 1)).toBe(true);
+    expect(isUnlocked(profile(), 'english', 9)).toBe(false);
+    expect(isUnlocked(recordResult(profile(), 'english', 8, 1, 100), 'english', 9)).toBe(true);
   });
   it('menyelesaikan level membuka level berikutnya; hasil terbaik tak turun', () => {
     let p = recordResult(profile(), 'math', 4, 3, 500);
