@@ -11,6 +11,9 @@ npm run preview  # coba hasil build / uji PWA offline
 npm test         # tes logika (vitest)
 ```
 
+## Mencoba online
+Setelah di-deploy: https://sidiklim.github.io/Game-Pembelajaran-SD/ (Settings → Pages → Source: GitHub Actions, lalu push ke `main`).
+
 ## Stack
 React 18 + TypeScript + Vite, Tailwind CSS, Framer Motion, `vite-plugin-pwa`, `idb-keyval` (IndexedDB, cadangan localStorage). Tanpa backend.
 

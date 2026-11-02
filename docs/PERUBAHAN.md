@@ -2,6 +2,15 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.2.1 — Publikasi GitHub Pages (2026-11-02)
+### Ditambahkan
+- Workflow `.github/workflows/pages.yml`: tiap push ke `main` (atau dijalankan manual) menjalankan tes + build lalu deploy ke GitHub Pages.
+- `vite.config.ts` membaca `BASE_PATH` agar aset dan scope PWA benar di subpath `/Game-Pembelajaran-SD/`; lokal tetap `/`.
+- `@types/node` (dev) untuk `process.env` di konfigurasi Vite.
+
+### Langkah satu kali di GitHub (manual)
+Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alamat: `https://sidiklim.github.io/Game-Pembelajaran-SD/`.
+
 ## v0.2.0 — Matematika Level 1–3 (2026-11-02)
 ### Ditambahkan
 - Tantangan **CountPick** (Matematika L1–3, Step 1 "Mengenal Angka 1–20"): pilih kelompok apel yang jumlahnya sama dengan angka soal. Rentang naik per level: L1 = 1–5, L2 = 1–10, L3 = 1–20.
