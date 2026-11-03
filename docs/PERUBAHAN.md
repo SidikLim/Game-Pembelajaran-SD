@@ -2,6 +2,24 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.8.0 — Ikon PWA PNG dan audit Lighthouse/aksesibilitas (2026-11-03)
+### Ditambahkan
+- Ikon PNG: 192, 512 (`any`), 512 maskable, dan `apple-touch-icon` 180 px (dibuat dari `public/icon.svg` dengan `scripts/generate-icons.mjs`); manifest memuat semuanya + kategori `education`/`kids`; `index.html` mendapat meta deskripsi, `apple-touch-icon`, dan meta aplikasi web.
+- `scripts/audit-a11y.cjs` + devDependency `axe-core`: audit aksesibilitas semua layar game.
+- `docs/AUDIT-PWA.md`: hasil dan cara mengulang audit.
+
+### Berubah (hasil audit aksesibilitas)
+- Warna tombol utama dan kotak level `#4CC38A` → `#17814F`; ubin huruf Spelling Bee `#FF7A59` → `#E0502F`; label keranjang tidak lagi transparan (kontras).
+- Dialog intro, progress bar, dan layar permainan kini punya nama/judul (`aria-label`, `h1` tersembunyi).
+- `aria-label` pada elemen tanpa role diberi `role` yang sesuai; nama tombol pilihan mengikuti teks yang terlihat; animasi tidur memakai emoji 💤.
+- Tombol pilihan diberi atribut `data-choice` untuk memudahkan pengujian otomatis.
+
+### Hasil
+- Lighthouse 12: mobile 98 / 100 / 100 / 100, desktop 100 / 100 / 100 / 100 (performa / aksesibilitas / best practices / SEO).
+- PWA: manifest dan semua ikon HTTP 200, service worker aktif, permainan (termasuk suara) berjalan offline.
+- axe-core: 0 pelanggaran pada seluruh layar (3 kali pindai). Uji alur Level 11–30 ulang: semua tamat tanpa error.
+- Belum: uji pembaca layar sungguhan dan audit situs Pages yang sudah live.
+
 ## v0.7.1 — Suara sintetis untuk seluruh ucapan (2026-11-03)
 ### Ditambahkan
 - `public/audio/`: 215 file mp3 + `manifest.json` untuk semua ucapan, dibuat dengan `scripts/generate-audio.ts` (Piper TTS, suara `en_US-lessac-medium`). Seluruh pengucapan (huruf, kata, kalimat, cerita) kini memakai suara yang sama di semua perangkat dan bekerja offline.
@@ -140,7 +158,7 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alam
 - Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini tidak ada level yang terdampak, aturan disiapkan untuk level berikutnya). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Verifikasi lisensi suara (atau ganti dengan rekaman manusia), tinjauan isi soal oleh guru, ikon PWA PNG, dan audit Lighthouse.
+1. Verifikasi lisensi suara (atau ganti dengan rekaman manusia), tinjauan isi soal oleh guru, uji dengan pembaca layar dan perangkat nyata, dan audit situs Pages yang sudah live.
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).
