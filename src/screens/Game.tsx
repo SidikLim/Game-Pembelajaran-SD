@@ -8,6 +8,10 @@ import { ClockRead } from '../challenges/ClockRead';
 import { FractionPick } from '../challenges/FractionPick';
 import { Multiply } from '../challenges/Multiply';
 import { ShareEqual } from '../challenges/ShareEqual';
+import { ArithQuiz } from '../challenges/ArithQuiz';
+import { FillBlank } from '../challenges/FillBlank';
+import { Preposition } from '../challenges/Preposition';
+import { StoryQuiz } from '../challenges/StoryQuiz';
 import { DragSum } from '../challenges/DragSum';
 import { SpellingBee } from '../challenges/SpellingBee';
 import type { ChallengeProps } from '../challenges/types';
@@ -17,7 +21,7 @@ import { comboLabel } from '../lib/scoring';
 import { sfx } from '../lib/audio';
 import type { HatColor, LevelConfig, MascotState, RunStats } from '../lib/types';
 
-const CHALLENGES: Record<string, (p: ChallengeProps) => JSX.Element> = { countPick: CountPick, pickMatch: PickMatch, balloonSub: BalloonSub, shapePuzzle: ShapePuzzle, multiply: Multiply, shareEqual: ShareEqual, clockRead: ClockRead, fractionPick: FractionPick, actionVerb: ActionVerb, dragSum: DragSum, spellingBee: SpellingBee };
+const CHALLENGES: Record<string, (p: ChallengeProps) => JSX.Element> = { countPick: CountPick, pickMatch: PickMatch, balloonSub: BalloonSub, shapePuzzle: ShapePuzzle, multiply: Multiply, shareEqual: ShareEqual, clockRead: ClockRead, fractionPick: FractionPick, actionVerb: ActionVerb, arith: ArithQuiz, fillBlank: FillBlank, preposition: Preposition, story: StoryQuiz, dragSum: DragSum, spellingBee: SpellingBee };
 
 /** Ukuran maskot menyesuaikan tinggi layar agar soal selalu muat tanpa scroll. */
 function useMascotSize() {

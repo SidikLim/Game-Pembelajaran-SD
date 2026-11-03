@@ -1,6 +1,7 @@
+import type { ArithKind, Prep } from './questions';
 import type { PoolName } from '../data/vocab';
 export type Subject = 'math' | 'english';
-export type ChallengeType = 'countPick' | 'pickMatch' | 'balloonSub' | 'shapePuzzle' | 'multiply' | 'shareEqual' | 'clockRead' | 'fractionPick' | 'actionVerb' | 'dragSum' | 'spellingBee' | 'comingSoon';
+export type ChallengeType = 'countPick' | 'pickMatch' | 'balloonSub' | 'shapePuzzle' | 'multiply' | 'shareEqual' | 'clockRead' | 'fractionPick' | 'actionVerb' | 'arith' | 'fillBlank' | 'preposition' | 'story' | 'dragSum' | 'spellingBee' | 'comingSoon';
 
 export interface LevelConfig {
   id: number; // 1..30
@@ -12,7 +13,7 @@ export interface LevelConfig {
   challenge: ChallengeType;
   questions: number;
   /** Parameter khusus tantangan (mis. batas jumlah, panjang kata). */
-  params: { maxSum?: number; wordLength?: number; maxCount?: number; pool?: PoolName; options?: number; letterCount?: number; maxMinuend?: number; perShape?: number; maxFactor?: number; maxPlates?: number; maxEach?: number; halfHours?: boolean; fractionLevel?: 1 | 2; verbMode?: 'see' | 'read' };
+  params: { maxSum?: number; wordLength?: number; maxCount?: number; pool?: PoolName; options?: number; letterCount?: number; maxMinuend?: number; perShape?: number; maxFactor?: number; maxPlates?: number; maxEach?: number; halfHours?: boolean; fractionLevel?: 1 | 2; verbMode?: 'see' | 'read'; arith?: ArithKind; fillTier?: 1 | 2 | 3; preps?: Prep[]; sentenceMode?: boolean; storyLevel?: 1 | 2 | 3 | 4 };
 }
 
 export interface LevelResult {
