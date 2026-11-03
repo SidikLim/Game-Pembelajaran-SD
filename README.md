@@ -36,6 +36,9 @@ Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapte
 
 Riwayat perubahan: [`docs/PERUBAHAN.md`](docs/PERUBAHAN.md). Keputusan desain: [`docs/KEPUTUSAN-DESAIN.md`](docs/KEPUTUSAN-DESAIN.md).
 
+## Suara pengucapan
+Game memutar file rekaman di `public/audio` bila ada, dan memakai suara bawaan perangkat bila tidak. Cara merekam/membuat file: [`docs/PANDUAN-SUARA.md`](docs/PANDUAN-SUARA.md); daftar 215 ucapan: [`docs/daftar-ucapan.csv`](docs/daftar-ucapan.csv).
+
 ## Struktur
 ```
 src/challenges/  satu komponen per jenis tantangan (DragSum, SpellingBee, ...)

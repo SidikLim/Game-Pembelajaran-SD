@@ -2,6 +2,20 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.7.0 — Dukungan file suara pengucapan (2026-11-03)
+### Ditambahkan
+- Pemutar suara berprioritas: **file rekaman** di `public/audio` (lewat `manifest.json`) → Web Speech API → senyap. Bila file gagal diputar (rusak/404), otomatis jatuh ke suara perangkat. Tombol bisu menghentikan keduanya.
+- `src/lib/phrases.ts`: daftar semua 215 ucapan yang bisa diminta game; `speechKey`/`speechSlug` untuk kunci dan nama file seragam.
+- Skrip: `scripts/list-phrases.ts` (membuat `docs/daftar-ucapan.csv` untuk perekam), `scripts/build-manifest.ts` (manifest dari rekaman yang ada), `scripts/generate-audio.ts` (membuat file dengan Piper TTS + ffmpeg; tidak menimpa rekaman yang ada).
+- `docs/PANDUAN-SUARA.md`: cara merekam suara manusia atau membuat suara sintetis, format file, dan cara menguji.
+- Tes: semua ucapan dari pembangkit soal harus terdaftar di `collectPhrases()`, nama file unik, dan manifest (bila ada) harus lengkap (36 tes).
+
+### Diuji di browser (dengan file uji sementara, tidak di-commit)
+- Ucapan yang ada di manifest memutar file tanpa memanggil suara perangkat; file 404 jatuh ke suara perangkat; mode bisu tidak memutar apa pun.
+
+### Belum ada
+- **Folder `public/audio` masih kosong**: belum ada rekaman maupun suara sintetis di repo, sehingga perilaku game belum berubah (masih Web Speech API). Isi dengan rekaman manusia (Opsi A) atau jalankan generator (Opsi B) setelah memeriksa lisensi model suaranya.
+
 ## v0.6.0 — Tingkat 3 (kelas 5–6), Level 21–30 (2026-11-03)
 ### Matematika (komponen **ArithQuiz** + pembangkit soal di `lib/questions.ts`)
 - **L21–23 Kali & Bagi Lanjut:** L21 perkalian 2–10, L22 pembagian habis (hasil 2–10), L23 campuran.
@@ -115,7 +129,7 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alam
 - Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini tidak ada level yang terdampak, aturan disiapkan untuk level berikutnya). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Tinjauan isi soal oleh guru, rekaman suara pengucapan, ikon PWA PNG, dan audit Lighthouse.
+1. Mengisi `public/audio` (rekaman manusia atau suara sintetis berlisensi jelas), tinjauan isi soal oleh guru, ikon PWA PNG, dan audit Lighthouse.
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).

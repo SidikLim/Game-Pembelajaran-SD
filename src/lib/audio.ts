@@ -1,8 +1,10 @@
+import { speechKey } from './speechKey';
+
 /** SFX disintesis dengan Web Audio (tanpa file aset => ringan & jalan offline). */
 let ctx: AudioContext | null = null;
 let muted = false;
 
-export const setMuted = (m: boolean) => { muted = m; if (m) window.speechSynthesis?.cancel(); };
+export const setMuted = (m: boolean) => { muted = m; if (m) { window.speechSynthesis?.cancel(); current?.pause(); } };
 
 function audio(): AudioContext | null {
   try {
@@ -39,14 +41,50 @@ export const sfx = {
   win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.13, 0.3, 'triangle', 0.2)),
 };
 
-/** Ucapkan kata Inggris (Web Speech API bila ada; tanpa suara bila tidak). */
-export function speak(text: string): boolean {
-  if (muted || !('speechSynthesis' in window)) return false;
-  window.speechSynthesis.cancel();
+// ---------------------------------------------------------------- Ucapan (pengucapan Inggris)
+// Prioritas: file rekaman di public/audio (lewat manifest) -> Web Speech API -> tanpa suara.
+let manifest: Record<string, string> | null = null;
+let manifestLoading: Promise<void> | null = null;
+let current: HTMLAudioElement | null = null;
+const base = () => (typeof import.meta !== 'undefined' ? import.meta.env.BASE_URL : '/');
+
+/** Muat daftar file suara sekali; bila tidak ada, game memakai Web Speech API. */
+export function preloadSpeech(): Promise<void> {
+  manifestLoading ??= fetch(`${base()}audio/manifest.json`)
+    .then((r) => (r.ok ? (r.json() as Promise<Record<string, string>>) : {}))
+    .catch(() => ({}))
+    .then((m) => { manifest = m; });
+  return manifestLoading;
+}
+
+function stopSpeech() {
+  window.speechSynthesis?.cancel();
+  if (current) { current.pause(); current = null; }
+}
+
+function speakSynth(text: string): boolean {
+  if (!('speechSynthesis' in window)) return false;
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
   u.rate = 0.8;
   u.pitch = 1.2;
   window.speechSynthesis.speak(u);
   return true;
+}
+
+/** Ucapkan teks Inggris. true bila ada suara yang diputar (rekaman atau suara perangkat). */
+export function speak(text: string): boolean {
+  if (muted) return false;
+  stopSpeech();
+  const file = manifest?.[speechKey(text)];
+  if (file) {
+    const a = new Audio(`${base()}audio/${file}`);
+    current = a;
+    // Bila file gagal diputar (rusak/diblokir), jatuh ke suara perangkat.
+    const fallback = () => { if (current === a) { current = null; speakSynth(text); } };
+    a.addEventListener('error', fallback, { once: true });
+    a.play().catch(fallback);
+    return true;
+  }
+  return speakSynth(text);
 }
