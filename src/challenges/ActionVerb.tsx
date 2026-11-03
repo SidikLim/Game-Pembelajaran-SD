@@ -53,7 +53,7 @@ export function ActionVerb({ level, index, seed, onAnswer }: ChallengeProps) {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="card flex min-h-[120px] w-full flex-col items-center justify-center gap-2 !py-3">
+      <div className="card flex min-h-[104px] w-full flex-col items-center justify-center gap-2 !py-3">
         {mode === 'see'
           ? <VerbAnim verb={q.verb} size={72} />
           : <span className="text-5xl font-extrabold tracking-wide" aria-label={`Kata ${q.verb}`}>{label(q.verb)}</span>}
@@ -65,15 +65,15 @@ export function ActionVerb({ level, index, seed, onAnswer }: ChallengeProps) {
           Petunjuk: jawabannya {mode === 'see' ? label(q.verb) : 'gerakan yang berulang di bawah'} 😉
         </motion.p>
       )}
-      <div className={`grid w-full gap-2 ${mode === 'see' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+      <div className={`grid w-full gap-2 ${mode === 'see' ? 'grid-cols-3' : 'grid-cols-2'}`}>
         {q.options.map((v, i) => {
           const wrong = wrongPicks.includes(v);
           const right = locked && v === q.verb;
           return (
             <motion.button key={v} onClick={() => choose(v)} disabled={wrong || locked} whileTap={{ scale: 0.96 }} aria-label={`Pilihan ${i + 1}`}
               animate={picked === v && wrong ? { x: [0, -10, 10, -6, 6, 0] } : right ? { scale: [1, 1.06, 1] } : {}}
-              className={`card grid min-h-[72px] place-items-center border-4 !p-2 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
-              {mode === 'see' ? <span className="text-3xl font-extrabold">{label(v)}</span> : <VerbAnim verb={v} size={44} />}
+              className={`card grid min-h-[60px] place-items-center border-4 !p-2 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
+              {mode === 'see' ? <span className="text-xl font-extrabold">{label(v)}</span> : <VerbAnim verb={v} size={44} />}
             </motion.button>
           );
         })}

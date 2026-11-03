@@ -17,8 +17,14 @@ Setelah di-deploy: https://sidiklim.github.io/Game-Pembelajaran-SD/ (Settings �
 ## Stack
 React 18 + TypeScript + Vite, Tailwind CSS, Framer Motion, `vite-plugin-pwa`, `idb-keyval` (IndexedDB, cadangan localStorage). Tanpa backend.
 
-## Status: irisan vertikal (v0.2)
-Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 6 tantangan:
+## Status: Tingkat 1–2 selesai (v0.5) — Level 1–20 per mata pelajaran
+Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 11 jenis tantangan:
+- **Matematika L11–13** — perkalian dasar, kelompok piring dan kue (`Multiply`)
+- **Matematika L14–16** — berbagi rata sebagai pembagian (`ShareEqual`)
+- **Matematika L17–18** — membaca jam analog (`ClockRead`)
+- **Matematika L19–20** — pecahan ½, ¼, ¾ dari potongan pizza (`FractionPick`)
+- **Inggris L11–13** — keluarga & anggota tubuh (`PickMatch`); **L14–16** — Spelling Bee 5–7 huruf (`SpellingBee`)
+- **Inggris L17–18** — kata kerja aksi dengan karakter bergerak (`ActionVerb`); **L19–20** — Listening (`PickMatch`)
 - **Matematika L1–3** — mengenal angka, pilih kelompok apel (`CountPick`)
 - **Matematika L7–8** — pengurangan dengan memecahkan balon (`BalloonSub`)
 - **Matematika L9–10** — puzzle bentuk lingkaran/persegi/segitiga (`ShapePuzzle`)
@@ -26,7 +32,7 @@ Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapte
 - **Inggris L1–8** — dengar/baca lalu pilih huruf atau gambar (`PickMatch`)
 - **Inggris L9–10** — Spelling Bee (`SpellingBee`)
 
-Level lain tampil sebagai "🚧 segera hadir" dan dikerjakan bertahap. Riwayat perubahan: [`docs/PERUBAHAN.md`](docs/PERUBAHAN.md). Keputusan desain: [`docs/KEPUTUSAN-DESAIN.md`](docs/KEPUTUSAN-DESAIN.md).
+Level 21–30 (Tingkat 3) tampil sebagai "🚧 segera hadir" dan dikerjakan bertahap. Riwayat perubahan: [`docs/PERUBAHAN.md`](docs/PERUBAHAN.md). Keputusan desain: [`docs/KEPUTUSAN-DESAIN.md`](docs/KEPUTUSAN-DESAIN.md).
 
 ## Struktur
 ```
