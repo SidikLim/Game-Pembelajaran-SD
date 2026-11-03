@@ -60,8 +60,8 @@ export function ShapePuzzle({ level, index, seed, onAnswer }: ChallengeProps) {
   const tray = pieces.filter((p) => !placed.has(p.id));
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
-      <p className="text-lg font-bold">Pasangkan tiap keping ke bentuk yang sama 🧩</p>
+    <div className="flex w-full flex-col items-center gap-2">
+      <p className="text-base font-bold">Pasangkan tiap keping ke bentuk yang sama 🧩</p>
       <div className="grid w-full grid-cols-3 gap-2">
         {SHAPES.map((s) => {
           const inside = pieces.filter((p) => placed.has(p.id) && p.shape === s);
@@ -69,9 +69,9 @@ export function ShapePuzzle({ level, index, seed, onAnswer }: ChallengeProps) {
             <motion.div key={s} ref={(el) => { zones.current[s] = el; }} onClick={() => selected !== null && drop(pieces[selected], s)}
               animate={shake?.shape === s ? { x: [0, -8, 8, -5, 5, 0] } : hintShape === s || near === s ? { scale: [1, 1.06, 1] } : {}}
               transition={hintShape === s || near === s ? { repeat: Infinity, duration: 0.8 } : { duration: 0.4 }}
-              className={`card flex min-h-[150px] flex-col items-center justify-between gap-1 border-4 p-2 ${near === s || hintShape === s ? 'border-leaf-400' : 'border-transparent'}`}>
+              className={`card flex min-h-[124px] flex-col items-center justify-between gap-1 border-4 !p-2 ${near === s || hintShape === s ? 'border-leaf-400' : 'border-transparent'}`}>
               <div className="relative grid flex-1 place-items-center">
-                <ShapeSvg shape={s} size={84} outline />
+                <ShapeSvg shape={s} size={72} outline />
                 <div className="absolute inset-0 flex flex-wrap content-center justify-center gap-0.5">
                   {inside.map((p) => <ShapeSvg key={p.id} shape={s} size={Math.min(p.size, 44)} fill={p.color} />)}
                 </div>
@@ -82,11 +82,11 @@ export function ShapePuzzle({ level, index, seed, onAnswer }: ChallengeProps) {
         })}
       </div>
       {wrongs >= 2 && (
-        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-4 py-2 text-center text-lg font-bold">
+        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
           Petunjuk: lihat tepinya — bulat, 4 sudut, atau 3 sudut. Lubang yang bergetar adalah jawabannya!
         </motion.p>
       )}
-      <div className="flex min-h-[90px] flex-wrap justify-center gap-3" aria-label="Keping bentuk">
+      <div className="flex min-h-[72px] flex-wrap justify-center gap-2" aria-label="Keping bentuk">
         {tray.map((p) => (
           <motion.button key={p.id} drag dragSnapToOrigin dragElastic={0.2} layout whileDrag={{ scale: 1.15, zIndex: 20, filter: 'drop-shadow(0 12px 10px rgba(11,48,64,0.35))' }}
             onDrag={(_, i) => setNear(zoneAt(i.point, 30))}

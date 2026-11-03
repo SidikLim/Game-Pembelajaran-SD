@@ -49,9 +49,9 @@ export function SpellingBee({ level, index, seed, onAnswer }: ChallengeProps) {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-5">
-      <div className="card flex flex-col items-center gap-2">
-        <div className="text-8xl" aria-label="Gambar kata">{q.entry.emoji}</div>
+    <div className="flex w-full flex-col items-center gap-3">
+      <div className="card flex flex-col items-center gap-1 !py-2">
+        <div className="text-7xl" aria-label="Gambar kata">{q.entry.emoji}</div>
         <button className="btn btn-secondary relative" onClick={() => say(word)} aria-label="Dengarkan kata">
           🔊 Dengar
           {wave > 0 && [0, 1].map((r) => (
@@ -65,17 +65,17 @@ export function SpellingBee({ level, index, seed, onAnswer }: ChallengeProps) {
           const hinted = hintOn && i === 0;
           return (
             <button key={i} onClick={() => remove(i)} aria-label={`Kotak huruf ${i + 1}`}
-              className={`grid h-16 w-14 place-items-center rounded-2xl border-4 text-4xl font-extrabold ${hinted ? 'border-sand-400 bg-sand-200' : 'border-sea-400 bg-white'}`}>
+              className={`grid h-14 w-12 place-items-center rounded-2xl border-4 text-3xl font-extrabold ${hinted ? 'border-sand-400 bg-sand-200' : 'border-sea-400 bg-white'}`}>
               {hinted ? word[0] : tile !== null ? q.letters[tile] : ''}
             </button>
           );
         })}
       </motion.div>
-      {hintOn && <p className="rounded-2xl bg-sand-200 px-4 py-2 text-lg font-bold">Petunjuk: huruf pertamanya {word[0]} 😉</p>}
+      {hintOn && <p className="rounded-2xl bg-sand-200 px-3 py-1 text-base font-bold">Petunjuk: huruf pertamanya {word[0]} 😉</p>}
       <div className="flex flex-wrap justify-center gap-3">
         {q.letters.map((c, i) => (
           <motion.button key={i} whileTap={{ scale: 0.9 }} whileHover={{ y: -3 }} onClick={() => place(i)} disabled={used.has(i) || (hintOn && i === firstTile)}
-            className={`grid h-16 w-16 place-items-center rounded-2xl bg-coral-400 text-4xl font-extrabold text-white shadow-chunky ${used.has(i) || (hintOn && i === firstTile) ? 'opacity-20' : ''}`}>
+            className={`grid h-14 w-14 place-items-center rounded-2xl bg-coral-400 text-3xl font-extrabold text-white shadow-chunky ${used.has(i) || (hintOn && i === firstTile) ? 'opacity-20' : ''}`}>
             {c}
           </motion.button>
         ))}
