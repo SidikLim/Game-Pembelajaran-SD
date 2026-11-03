@@ -1,4 +1,4 @@
-import { ANIMALS, COLORS, FRUITS, LETTERS, LETTER_WORDS, NUMBERS, type PoolName, type VocabItem } from '../data/vocab';
+import { ANIMALS, BODY, COLORS, FAMILY, FRUITS, SENTENCES, LETTERS, LETTER_WORDS, NUMBERS, type PoolName, type VocabItem } from '../data/vocab';
 import { randInt, shuffle, type Rng } from './random';
 
 export interface SumQuestion { a: number; b: number; answer: number }
@@ -45,6 +45,18 @@ export const WORDS: WordEntry[] = [
   { word: 'FROG', emoji: '🐸', id: 'frog' }, { word: 'DUCK', emoji: '🦆', id: 'duck' },
   { word: 'STAR', emoji: '⭐', id: 'star' }, { word: 'MOON', emoji: '🌙', id: 'moon' },
   { word: 'TREE', emoji: '🌳', id: 'tree' }, { word: 'BOOK', emoji: '📖', id: 'book' },
+  // 5 huruf
+  { word: 'APPLE', emoji: '🍎', id: 'apple' }, { word: 'HORSE', emoji: '🐴', id: 'horse' }, { word: 'TIGER', emoji: '🐯', id: 'tiger' },
+  { word: 'SNAKE', emoji: '🐍', id: 'snake' }, { word: 'MOUSE', emoji: '🐭', id: 'mouse' }, { word: 'HOUSE', emoji: '🏠', id: 'house' },
+  { word: 'BREAD', emoji: '🍞', id: 'bread' }, { word: 'TRAIN', emoji: '🚂', id: 'train' }, { word: 'PIZZA', emoji: '🍕', id: 'pizza' },
+  // 6 huruf
+  { word: 'ORANGE', emoji: '🍊', id: 'orange' }, { word: 'BANANA', emoji: '🍌', id: 'banana' }, { word: 'RABBIT', emoji: '🐰', id: 'rabbit' },
+  { word: 'MONKEY', emoji: '🐵', id: 'monkey' }, { word: 'FLOWER', emoji: '🌸', id: 'flower' }, { word: 'GUITAR', emoji: '🎸', id: 'guitar' },
+  { word: 'SPIDER', emoji: '🕷️', id: 'spider' }, { word: 'TURTLE', emoji: '🐢', id: 'turtle' },
+  // 7 huruf
+  { word: 'CHICKEN', emoji: '🐔', id: 'chicken' }, { word: 'PENGUIN', emoji: '🐧', id: 'penguin' }, { word: 'DOLPHIN', emoji: '🐬', id: 'dolphin' },
+  { word: 'PUMPKIN', emoji: '🎃', id: 'pumpkin' }, { word: 'PANCAKE', emoji: '🥞', id: 'pancake' }, { word: 'LOBSTER', emoji: '🦞', id: 'lobster' },
+  { word: 'BALLOON', emoji: '🎈', id: 'balloon' },
 ];
 
 export interface SpellQuestion { entry: WordEntry; letters: string[] }
@@ -74,6 +86,8 @@ export interface PickQuestion {
   answerId: string;
   /** Petunjuk setelah anak salah. */
   hint: string;
+  /** Instruksi singkat di atas pilihan. */
+  instruction: string;
 }
 
 const asOption = (v: VocabItem): PickOption => ({ id: v.id, emoji: v.emoji, color: v.color, count: v.count, speak: v.word });
@@ -85,6 +99,10 @@ function poolItems(pool: Exclude<PoolName, 'letters'>): VocabItem[] {
     case 'animalsColors': return [...ANIMALS, ...COLORS];
     case 'numbers': return NUMBERS;
     case 'numbersFruits': return [...NUMBERS, ...FRUITS];
+    case 'family': return FAMILY;
+    case 'body': return BODY;
+    case 'familyBody': return [...FAMILY, ...BODY];
+    case 'sentences': return SENTENCES;
   }
 }
 
@@ -105,6 +123,7 @@ export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optio
         options: shuffle(rng, [answerId, ...others]).map((l) => ({ id: l, text: l, speak: l })),
         answerId,
         hint: `Huruf ini ada di kata ${lw.word.toUpperCase()} ${lw.emoji}`,
+        instruction: 'Dengarkan, lalu pilih hurufnya 👂',
       });
     } else {
       const items = poolItems(pool);
@@ -113,12 +132,14 @@ export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optio
       const kind = (i: VocabItem) => (i.count ? 'n' : i.color ? 'c' : 'e');
       const sameKind = items.filter((i) => i.id !== answerId && (pool !== 'numbersFruits' && pool !== 'animalsColors' ? true : kind(i) === kind(answer)));
       const others = shuffle(rng, sameKind).slice(0, optionCount - 1);
+      const listening = pool === 'sentences';
       out.push({
-        promptText: answer.word.toUpperCase(),
+        promptText: listening ? undefined : answer.word.toUpperCase(),
         speak: answer.word,
         options: shuffle(rng, [answer, ...others]).map(asOption),
         answerId,
-        hint: 'Tekan 🔊 untuk mendengar kata, lalu ketuk gambar untuk mendengar namanya',
+        hint: listening ? `Kalimatnya: "${answer.word}"` : 'Tekan 🔊 untuk mendengar kata, lalu ketuk gambar untuk mendengar namanya',
+        instruction: listening ? 'Dengarkan kalimatnya, lalu pilih gambarnya 👂' : 'Pilih gambar yang cocok 👆',
       });
     }
   }
@@ -160,4 +181,105 @@ export function makeShapePuzzles(rng: Rng, count: number, perShape: number): Sha
     });
     return shuffle(rng, pieces).map((p, i) => ({ ...p, id: i }));
   });
+}
+
+/** Pilihan angka: jawaban + pengecoh dari kandidat (>= 1, bukan jawaban); dilengkapi bila kandidat kurang. */
+function numberOptions(rng: Rng, answer: number, candidates: number[], count = 3): number[] {
+  const picked = shuffle(rng, [...new Set(candidates.filter((c) => c >= 1 && c !== answer))]).slice(0, count - 1);
+  for (let extra = answer + 1; picked.length < count - 1; extra++) if (!picked.includes(extra)) picked.push(extra);
+  return shuffle(rng, [answer, ...picked]);
+}
+
+export interface MulQuestion { a: number; b: number; answer: number; options: number[] }
+
+/** a kelompok berisi b benda; faktor 1..maxFactor (bukan 1x1), tidak berulang beruntun. */
+export function makeMulQuestions(rng: Rng, count: number, maxFactor: number): MulQuestion[] {
+  const out: MulQuestion[] = [];
+  let guard = 0;
+  while (out.length < count && guard++ < 500) {
+    const a = randInt(rng, 1, maxFactor), b = randInt(rng, 1, maxFactor);
+    if (a * b < 2) continue;
+    const prev = out[out.length - 1];
+    if (prev && prev.a === a && prev.b === b) continue;
+    const answer = a * b;
+    out.push({ a, b, answer, options: numberOptions(rng, answer, [a + b, answer + 1, answer - 1, answer + 2, answer - 2]) });
+  }
+  return out;
+}
+
+export interface ShareQuestion { plates: number; each: number; total: number }
+
+/** Berbagi rata: total = piring x isi, total <= 20. */
+export function makeShareQuestions(rng: Rng, count: number, maxPlates: number, maxEach: number): ShareQuestion[] {
+  const out: ShareQuestion[] = [];
+  let guard = 0;
+  while (out.length < count && guard++ < 500) {
+    const plates = randInt(rng, 2, maxPlates), each = randInt(rng, 1, maxEach);
+    const prev = out[out.length - 1];
+    if (prev && prev.plates === plates && prev.each === each) continue;
+    out.push({ plates, each, total: plates * each });
+  }
+  return out;
+}
+
+export const fmtTime = (h: number, m: number) => `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+export interface ClockQuestion { h: number; m: number; answer: string; options: string[] }
+
+/** Jam 1..12, menit 0 (dan 30 bila halfHours); 3 pilihan waktu berbeda. */
+export function makeClockQuestions(rng: Rng, count: number, halfHours: boolean): ClockQuestion[] {
+  const out: ClockQuestion[] = [];
+  let guard = 0;
+  while (out.length < count && guard++ < 500) {
+    const h = randInt(rng, 1, 12), m = halfHours && rng() < 0.5 ? 30 : 0;
+    const answer = fmtTime(h, m);
+    if (out.length && out[out.length - 1].answer === answer) continue;
+    const cands = [fmtTime((h % 12) + 1, m), fmtTime(((h + 10) % 12) + 1, m)];
+    if (halfHours) cands.push(fmtTime(h, m === 0 ? 30 : 0));
+    const picked = shuffle(rng, [...new Set(cands.filter((c) => c !== answer))]).slice(0, 2);
+    while (picked.length < 2) {
+      const c = fmtTime(randInt(rng, 1, 12), halfHours && rng() < 0.5 ? 30 : 0);
+      if (c !== answer && !picked.includes(c)) picked.push(c);
+    }
+    out.push({ h, m, answer, options: shuffle(rng, [answer, ...picked]) });
+  }
+  return out;
+}
+
+export interface FractionOption { id: string; num: number; den: number }
+export interface FractionQuestion { slices: number; colored: boolean[]; answerId: string; options: FractionOption[] }
+
+const FRAC = { half: { id: '1/2', num: 1, den: 2 }, quarter: { id: '1/4', num: 1, den: 4 }, three: { id: '3/4', num: 3, den: 4 } };
+
+/** Potongan pizza. Level 1: 1/2 dan 1/4 (2 pilihan). Level 2: + 3/4 (3 pilihan); 1/2 kadang digambar 2 dari 4 potong. */
+export function makeFractionQuestions(rng: Rng, count: number, level: 1 | 2): FractionQuestion[] {
+  const targets = level === 1 ? [FRAC.half, FRAC.quarter] : [FRAC.half, FRAC.quarter, FRAC.three];
+  const out: FractionQuestion[] = [];
+  let last = '';
+  while (out.length < count) {
+    const t = targets[randInt(rng, 0, targets.length - 1)];
+    if (t.id === last && targets.length > 1) continue;
+    last = t.id;
+    const slices = t.den === 2 && level === 2 && rng() < 0.5 ? 4 : t.den;
+    const k = slices === 4 && t.den === 2 ? 2 : t.num;
+    const order = shuffle(rng, Array.from({ length: slices }, (_, i) => i));
+    const colored = Array(slices).fill(false) as boolean[];
+    order.slice(0, k).forEach((i) => { colored[i] = true; });
+    out.push({ slices, colored, answerId: t.id, options: shuffle(rng, targets) });
+  }
+  return out;
+}
+
+export const VERBS = ['run', 'jump', 'sleep', 'eat', 'swim', 'dance', 'read', 'sing'] as const;
+export type Verb = (typeof VERBS)[number];
+export interface VerbQuestion { verb: Verb; options: Verb[] }
+
+export function makeVerbQuestions(rng: Rng, count: number, optionCount: number): VerbQuestion[] {
+  const out: VerbQuestion[] = [];
+  while (out.length < count) {
+    const verb = VERBS[randInt(rng, 0, VERBS.length - 1)];
+    if (out.length && out[out.length - 1].verb === verb) continue;
+    const others = shuffle(rng, VERBS.filter((v) => v !== verb)).slice(0, optionCount - 1);
+    out.push({ verb, options: shuffle(rng, [verb, ...others]) });
+  }
+  return out;
 }

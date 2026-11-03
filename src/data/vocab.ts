@@ -36,4 +36,26 @@ export const FRUITS: VocabItem[] = [
   { id: 'watermelon', word: 'Watermelon', emoji: '🍉' }, { id: 'pineapple', word: 'Pineapple', emoji: '🍍' }, { id: 'pear', word: 'Pear', emoji: '🍐' },
 ];
 
-export type PoolName = 'letters' | 'animals' | 'colors' | 'animalsColors' | 'numbers' | 'numbersFruits';
+export const FAMILY: VocabItem[] = [
+  { id: 'mother', word: 'Mother', emoji: '👩' }, { id: 'father', word: 'Father', emoji: '👨' }, { id: 'brother', word: 'Brother', emoji: '👦' },
+  { id: 'sister', word: 'Sister', emoji: '👧' }, { id: 'grandmother', word: 'Grandmother', emoji: '👵' },
+  { id: 'grandfather', word: 'Grandfather', emoji: '👴' }, { id: 'baby', word: 'Baby', emoji: '👶' },
+];
+
+export const BODY: VocabItem[] = [
+  { id: 'eye', word: 'Eye', emoji: '👁️' }, { id: 'ear', word: 'Ear', emoji: '👂' }, { id: 'nose', word: 'Nose', emoji: '👃' },
+  { id: 'mouth', word: 'Mouth', emoji: '👄' }, { id: 'hand', word: 'Hand', emoji: '✋' }, { id: 'foot', word: 'Foot', emoji: '🦶' },
+  { id: 'leg', word: 'Leg', emoji: '🦵' }, { id: 'tooth', word: 'Tooth', emoji: '🦷' }, { id: 'arm', word: 'Arm', emoji: '💪' },
+];
+
+/** Kalimat pendek untuk Listening Comprehension; tiap kalimat punya satu gambar unik. */
+export const SENTENCES: VocabItem[] = [
+  { id: 's1', word: 'I see a red apple', emoji: '🍎' }, { id: 's2', word: 'The dog is running', emoji: '🐕' },
+  { id: 's3', word: 'The sun is hot', emoji: '☀️' }, { id: 's4', word: 'It is raining', emoji: '🌧️' },
+  { id: 's5', word: 'The bird can fly', emoji: '🐦' }, { id: 's6', word: 'I like to read books', emoji: '📚' },
+  { id: 's7', word: 'She is eating pizza', emoji: '🍕' }, { id: 's8', word: 'The baby is sleeping', emoji: '👶' },
+  { id: 's9', word: 'We play football', emoji: '⚽' }, { id: 's10', word: 'The fish can swim', emoji: '🐟' },
+  { id: 's11', word: 'He rides a bike', emoji: '🚲' }, { id: 's12', word: 'I brush my teeth', emoji: '🪥' },
+];
+
+export type PoolName = 'letters' | 'animals' | 'colors' | 'animalsColors' | 'numbers' | 'numbersFruits' | 'family' | 'body' | 'familyBody' | 'sentences';

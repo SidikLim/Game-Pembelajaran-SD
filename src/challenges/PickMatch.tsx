@@ -36,7 +36,7 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <div className="card flex flex-col items-center gap-2 !py-3">
-        {q.promptText && <span className="text-5xl font-extrabold tracking-wide" aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
+        {q.promptText && <span className={`${q.promptText.length > 8 ? 'text-3xl' : q.promptText.length > 6 ? 'text-4xl' : 'text-5xl'} font-extrabold tracking-wide`} aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
         <button className="btn btn-secondary relative" onClick={() => say(q.speak)} aria-label="Dengarkan">
           🔊 Dengar
           {wave > 0 && [0, 1].map((r) => (
@@ -45,7 +45,7 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
           ))}
         </button>
       </div>
-      <p className="text-base font-bold">{q.promptText ? 'Pilih gambar yang cocok 👆' : 'Dengarkan, lalu pilih hurufnya 👂'}</p>
+      <p className="text-base font-bold">{q.instruction}</p>
       {wrongPicks.length >= 2 && (
         <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
           Petunjuk: {q.hint}
