@@ -2,6 +2,51 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.7.1 — Suara sintetis untuk seluruh ucapan (2026-11-03)
+### Ditambahkan
+- `public/audio/`: 215 file mp3 + `manifest.json` untuk semua ucapan, dibuat dengan `scripts/generate-audio.ts` (Piper TTS, suara `en_US-lessac-medium`). Seluruh pengucapan (huruf, kata, kalimat, cerita) kini memakai suara yang sama di semua perangkat dan bekerja offline.
+- Service worker menyimpan semua file (precache total ±1,9 MB untuk 223 berkas).
+
+### Diuji
+- Pemeriksaan otomatis 215 file: durasi 0,4–8,4 detik (median 0,67), tidak ada yang hening, volume seragam.
+- Browser: huruf + kata contoh (L1), kata hewan (L4), Spelling Bee (L9), cerita (L27), dan kalimat listening (L19) memutar file (HTTP 200), tanpa suara perangkat dan tanpa permintaan gagal.
+- 36 tes lolos, termasuk pemeriksaan manifest lengkap.
+
+### Perlu diperhatikan
+- **Lisensi model suara belum diverifikasi** (lihat `docs/PANDUAN-SUARA.md`). Suara belum didengarkan manusia.
+- Nama huruf dilafalkan lewat ejaan (A → "ay", W → "double you") karena TTS membaca huruf tunggal sebagai kata biasa.
+
+## v0.7.0 — Dukungan file suara pengucapan (2026-11-03)
+### Ditambahkan
+- Pemutar suara berprioritas: **file rekaman** di `public/audio` (lewat `manifest.json`) → Web Speech API → senyap. Bila file gagal diputar (rusak/404), otomatis jatuh ke suara perangkat. Tombol bisu menghentikan keduanya.
+- `src/lib/phrases.ts`: daftar semua 215 ucapan yang bisa diminta game; `speechKey`/`speechSlug` untuk kunci dan nama file seragam.
+- Skrip: `scripts/list-phrases.ts` (membuat `docs/daftar-ucapan.csv` untuk perekam), `scripts/build-manifest.ts` (manifest dari rekaman yang ada), `scripts/generate-audio.ts` (membuat file dengan Piper TTS + ffmpeg; tidak menimpa rekaman yang ada).
+- `docs/PANDUAN-SUARA.md`: cara merekam suara manusia atau membuat suara sintetis, format file, dan cara menguji.
+- Tes: semua ucapan dari pembangkit soal harus terdaftar di `collectPhrases()`, nama file unik, dan manifest (bila ada) harus lengkap (36 tes).
+
+### Diuji di browser (dengan file uji sementara, tidak di-commit)
+- Ucapan yang ada di manifest memutar file tanpa memanggil suara perangkat; file 404 jatuh ke suara perangkat; mode bisu tidak memutar apa pun.
+
+## v0.6.0 — Tingkat 3 (kelas 5–6), Level 21–30 (2026-11-03)
+### Matematika (komponen **ArithQuiz** + pembangkit soal di `lib/questions.ts`)
+- **L21–23 Kali & Bagi Lanjut:** L21 perkalian 2–10, L22 pembagian habis (hasil 2–10), L23 campuran.
+- **L24–26 Desimal & Persen:** L24 jumlah potongan diskon (10/20/50%), L25 harga akhir setelah diskon (10/20/25/50%) pada harga mainan dalam Rupiah (pemisah ribuan `id-ID`), L26 tambah/kurang desimal berkoma (jus liter, apel kg, pita meter; hasil selalu positif).
+- **L27–30 Soal Cerita Petualangan:** L27 tambah/kurang, L28 kali/bagi, L29 dua langkah (beli beberapa peta lalu hitung sisa koin), L30 campuran + diskon. Tema bajak laut orisinal. 4 pilihan; pengecoh dibuat dari kesalahan umum (mis. memilih jumlah potongan alih-alih harga akhir).
+- Petunjuk setelah 2 kali salah menjelaskan langkah hitung tanpa membocorkan jawaban.
+
+### Bahasa Inggris
+- **FillBlank** (L21–23): melengkapi kalimat dengan subject–verb yang tepat. Tier 1: I/You/We + have/am/are; tier 2: he/she + kata kerja -s; tier 3: campuran. 24 kalimat; kalimat lengkap dibacakan setelah benar.
+- **Preposition** (L24–26): adegan kecil benda *in / on / under / behind* sebuah kotak (meja untuk *under*). L24 = 3 pilihan (in, on, under), L25 = 4 pilihan, L26 berbentuk melengkapi kalimat "The cat is ___ the box."
+- **StoryQuiz** (L27–30): 20 cerita pendek bergambar + 1 pertanyaan pemahaman, bisa didengarkan. L27 2 kalimat, L28 3 kalimat, L29 4 kalimat, L30 butuh penyimpulan (mis. hujan dari jas hujan dan payung).
+- Bank soal ada di `src/data/english3.ts`.
+
+### Pengujian
+- 32 tes otomatis, termasuk kebenaran jawaban hitung (kali/bagi, diskon, desimal, dua langkah), bank soal, dan aturan buka-kunci Level 21.
+- Browser: ke-20 level Tingkat 3 dimainkan sampai tamat di 412×800 dan 360×640 tanpa error. Satu temuan: Short Stories L29 kelebihan 28px di 360×640 saat petunjuk muncul; diperbaiki dengan memadatkan kartu cerita (teks cerita panjang mengecil otomatis). Setelah perbaikan, 20 cerita diperiksa dengan petunjuk tampil: tidak ada scroll.
+
+### Catatan
+- Isi soal Tingkat 3 ditulis oleh AI dan belum ditinjau guru; sebaiknya dicek kesesuaiannya dengan kurikulum.
+
 ## v0.5.0 — Tingkat 2 (kelas 3–4), Level 11–20 (2026-11-03)
 ### Matematika
 - **Multiply** (L11–13, Perkalian Dasar): a piring × b kue, pilih jumlah kue. Faktor maksimum 3 / 4 / 5.
@@ -95,7 +140,7 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alam
 - Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini tidak ada level yang terdampak, aturan disiapkan untuk level berikutnya). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Tantangan Tingkat 3 (kelas 5–6, Level 21–30): perkalian/pembagian lanjut, desimal & persen, soal cerita; fill in the blanks, prepositions, cerita pendek.
+1. Verifikasi lisensi suara (atau ganti dengan rekaman manusia), tinjauan isi soal oleh guru, ikon PWA PNG, dan audit Lighthouse.
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).

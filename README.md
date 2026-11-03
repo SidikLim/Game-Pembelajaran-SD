@@ -17,8 +17,10 @@ Setelah di-deploy: https://sidiklim.github.io/Game-Pembelajaran-SD/ (Settings �
 ## Stack
 React 18 + TypeScript + Vite, Tailwind CSS, Framer Motion, `vite-plugin-pwa`, `idb-keyval` (IndexedDB, cadangan localStorage). Tanpa backend.
 
-## Status: Tingkat 1–2 selesai (v0.5) — Level 1–20 per mata pelajaran
-Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 11 jenis tantangan:
+## Status: semua 3 tingkat tersedia (v0.6) — Level 1–30 per mata pelajaran
+Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 15 jenis tantangan:
+- **Matematika L21–30** — kali/bagi lanjut, diskon & desimal, soal cerita petualangan (`ArithQuiz`)
+- **Inggris L21–23** — melengkapi kalimat (`FillBlank`); **L24–26** — preposisi (`Preposition`); **L27–30** — cerita pendek (`StoryQuiz`)
 - **Matematika L11–13** — perkalian dasar, kelompok piring dan kue (`Multiply`)
 - **Matematika L14–16** — berbagi rata sebagai pembagian (`ShareEqual`)
 - **Matematika L17–18** — membaca jam analog (`ClockRead`)
@@ -32,7 +34,10 @@ Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapte
 - **Inggris L1–8** — dengar/baca lalu pilih huruf atau gambar (`PickMatch`)
 - **Inggris L9–10** — Spelling Bee (`SpellingBee`)
 
-Level 21–30 (Tingkat 3) tampil sebagai "🚧 segera hadir" dan dikerjakan bertahap. Riwayat perubahan: [`docs/PERUBAHAN.md`](docs/PERUBAHAN.md). Keputusan desain: [`docs/KEPUTUSAN-DESAIN.md`](docs/KEPUTUSAN-DESAIN.md).
+Riwayat perubahan: [`docs/PERUBAHAN.md`](docs/PERUBAHAN.md). Keputusan desain: [`docs/KEPUTUSAN-DESAIN.md`](docs/KEPUTUSAN-DESAIN.md).
+
+## Suara pengucapan
+Game memutar file suara di `public/audio` (saat ini 215 file sintetis, lisensi suara perlu diverifikasi) dan memakai suara bawaan perangkat bila file tidak ada. Cara merekam/membuat file: [`docs/PANDUAN-SUARA.md`](docs/PANDUAN-SUARA.md); daftar 215 ucapan: [`docs/daftar-ucapan.csv`](docs/daftar-ucapan.csv).
 
 ## Struktur
 ```
