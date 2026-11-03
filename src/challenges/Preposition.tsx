@@ -75,12 +75,12 @@ export function Preposition({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className="grid w-full grid-cols-2 gap-2">
-        {q.options.map((p, i) => {
+        {q.options.map((p) => {
           const wrong = wrongPicks.includes(p);
           return (
-            <motion.button key={p} onClick={() => choose(p)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={p} onClick={() => choose(p)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} data-choice=""
               animate={picked === p && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[56px] !text-2xl ${wrong ? 'opacity-30' : ''} ${locked && p === q.prep ? '!bg-leaf-600' : ''}`}>{p.toUpperCase()}</motion.button>
+              className={`btn btn-secondary !min-h-[56px] !text-2xl ${wrong ? 'opacity-30' : ''} ${locked && p === q.prep ? '!bg-leaf-700' : ''}`}>{p.toUpperCase()}</motion.button>
           );
         })}
       </div>

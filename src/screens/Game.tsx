@@ -78,6 +78,7 @@ export function Game({ level, hat, onFinish, onExit }: Props) {
 
   return (
     <main className="relative mx-auto flex min-h-[100dvh] max-w-xl flex-col items-center gap-2 px-4 pb-4 pt-3">
+      <h1 className="sr-only">Level {level.id}: {level.title}</h1>
       <header className="flex w-full items-center gap-3">
         <button className="btn btn-ghost !min-h-[48px] !px-4" onClick={onExit} aria-label="Kembali ke peta level">←</button>
         <div className="flex-1"><ProgressBar value={started ? (mascot === 'correct' ? index + 1 : index) : 0} max={level.questions} /></div>
@@ -87,7 +88,7 @@ export function Game({ level, hat, onFinish, onExit }: Props) {
       <Mascot state={started ? mascot : 'idle'} hat={hat} size={mascotSize} />
       {started && <Challenge key={index} level={level} index={index} seed={seed} onAnswer={handleAnswer} />}
       {!started && (
-        <Modal>
+        <Modal label={`Level ${level.id}: ${level.title}`}>
           <Mascot state="idle" hat={hat} size={110} />
           <h2 className="text-3xl font-extrabold">Level {level.id}</h2>
           <p className="mt-1 text-xl font-bold">{level.title}</p>

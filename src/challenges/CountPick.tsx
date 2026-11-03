@@ -28,7 +28,7 @@ export function CountPick({ level, index, seed, onAnswer }: ChallengeProps) {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <div className="card flex items-center gap-3 text-center !px-6 !py-2 [@media(min-height:760px)]:!py-3">
-        <span className="text-5xl font-extrabold" aria-label={`Angka ${q.target}`}>{q.target}</span>
+        <span className="text-5xl font-extrabold" role="img" aria-label={`Angka ${q.target}`}>{q.target}</span>
       </div>
       <p className="text-base font-bold">Pilih kelompok apel yang sama 🍎</p>
       {wrongPicks.length > 0 && (
@@ -43,7 +43,7 @@ export function CountPick({ level, index, seed, onAnswer }: ChallengeProps) {
           return (
             <motion.button key={n} onClick={() => choose(n)} disabled={wrong || locked} whileTap={{ scale: 0.97 }}
               animate={picked === n && wrong ? { x: [0, -10, 10, -6, 6, 0] } : right ? { scale: [1, 1.06, 1] } : {}}
-              aria-label={`Pilihan ${i + 1}`}
+              aria-label={`Pilihan ${i + 1}`} data-choice=""
               className={`card flex min-h-[64px] [@media(min-height:760px)]:min-h-[88px] flex-wrap content-center justify-center gap-0.5 border-4 !p-2 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
               {Array.from({ length: n }, (_, k) => <span key={k} className={emojiSize} aria-hidden>🍎</span>)}
             </motion.button>

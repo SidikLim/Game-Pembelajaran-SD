@@ -32,7 +32,7 @@ export function FillBlank({ level, index, seed, onAnswer }: ChallengeProps) {
     <div className="flex w-full flex-col items-center gap-3">
       <div className="card flex w-full flex-col items-center gap-2 !py-4 text-center">
         <span className="text-5xl" aria-hidden>{q.emoji}</span>
-        <p className="text-2xl font-extrabold leading-snug" aria-label={q.text.replace('___', 'kosong')}>
+        <p className="text-2xl font-extrabold leading-snug" role="img" aria-label={q.text.replace('___', 'kosong')}>
           {before}
           <motion.span key={locked ? 'f' : 'b'} initial={locked ? { scale: 0.5 } : false} animate={{ scale: 1 }}
             className={`mx-1 inline-block min-w-[4.5rem] rounded-xl border-4 px-2 ${locked ? 'border-leaf-400 bg-leaf-400/20' : 'border-dashed border-sea-400'}`}>
@@ -48,12 +48,12 @@ export function FillBlank({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className="grid w-full grid-cols-3 gap-2">
-        {q.options.map((w, i) => {
+        {q.options.map((w) => {
           const wrong = wrongPicks.includes(w);
           return (
-            <motion.button key={w} onClick={() => choose(w)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={w} onClick={() => choose(w)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} data-choice=""
               animate={picked === w && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[60px] !px-1 !text-xl ${wrong ? 'opacity-30' : ''} ${locked && w === q.answer ? '!bg-leaf-600' : ''}`}>{w}</motion.button>
+              className={`btn btn-secondary !min-h-[60px] !px-1 !text-xl ${wrong ? 'opacity-30' : ''} ${locked && w === q.answer ? '!bg-leaf-700' : ''}`}>{w}</motion.button>
           );
         })}
       </div>

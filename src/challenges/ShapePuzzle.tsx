@@ -86,7 +86,7 @@ export function ShapePuzzle({ level, index, seed, onAnswer }: ChallengeProps) {
           Petunjuk: lihat tepinya — bulat, 4 sudut, atau 3 sudut. Lubang yang bergetar adalah jawabannya!
         </motion.p>
       )}
-      <div className="flex min-h-[72px] flex-wrap justify-center gap-2" aria-label="Keping bentuk">
+      <div className="flex min-h-[72px] flex-wrap justify-center gap-2" role="group" aria-label="Keping bentuk">
         {tray.map((p) => (
           <motion.button key={p.id} drag dragSnapToOrigin dragElastic={0.2} layout whileDrag={{ scale: 1.15, zIndex: 20, filter: 'drop-shadow(0 12px 10px rgba(11,48,64,0.35))' }}
             onDrag={(_, i) => setNear(zoneAt(i.point, 30))}

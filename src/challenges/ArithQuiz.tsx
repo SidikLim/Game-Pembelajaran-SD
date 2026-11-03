@@ -35,12 +35,12 @@ export function ArithQuiz({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className={`grid w-full gap-2 ${q.options.length > 3 || q.options.some((o) => o.text.length > 7) ? 'grid-cols-2' : 'grid-cols-3'}`}>
-        {q.options.map((o, i) => {
+        {q.options.map((o) => {
           const wrong = wrongPicks.includes(o.id);
           return (
-            <motion.button key={o.id} onClick={() => choose(o.id)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={o.id} onClick={() => choose(o.id)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} data-choice=""
               animate={picked === o.id && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[60px] !px-2 !text-2xl tabular-nums ${wrong ? 'opacity-30' : ''} ${locked && o.id === q.answerId ? '!bg-leaf-600' : ''}`}>{o.text}</motion.button>
+              className={`btn btn-secondary !min-h-[60px] !px-2 !text-2xl tabular-nums ${wrong ? 'opacity-30' : ''} ${locked && o.id === q.answerId ? '!bg-leaf-700' : ''}`}>{o.text}</motion.button>
           );
         })}
       </div>

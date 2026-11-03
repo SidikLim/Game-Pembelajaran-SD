@@ -87,7 +87,7 @@ export function LevelMap({ profile, subject, onPlay, onBack }: { profile: Profil
               return (
                 <button key={l.id} disabled={!open} onClick={() => onPlay(l.id)}
                   aria-label={`Level ${l.id}: ${l.title}${!playable ? ', segera hadir' : !open ? ', terkunci' : ''}`}
-                  className={`flex min-h-[64px] flex-col items-center justify-center rounded-2xl text-xl font-extrabold shadow-chunky transition active:translate-y-1 active:shadow-none ${open ? 'bg-leaf-400 text-white' : 'bg-sea-100 text-sea-800/50'}`}>
+                  className={`flex min-h-[64px] flex-col items-center justify-center rounded-2xl text-xl font-extrabold shadow-chunky transition active:translate-y-1 active:shadow-none ${open ? 'bg-leaf-700 text-white' : 'bg-sea-100 text-sea-800/50'}`}>
                   {open ? l.id : playable ? '🔒' : '🚧'}
                   {res && <Stars count={res.stars} size="text-xs" />}
                 </button>

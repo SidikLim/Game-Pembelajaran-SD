@@ -56,7 +56,7 @@ export function DragSum({ level, index, seed, onAnswer }: ChallengeProps) {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <div className="card flex flex-wrap items-center justify-center gap-3 !py-2 text-4xl font-extrabold">
-        <span aria-label={`${q.a} ditambah ${q.b}`}>{q.a} + {q.b} = ?</span>
+        <span role="img" aria-label={`${q.a} ditambah ${q.b}`}>{q.a} + {q.b} = ?</span>
       </div>
       <p className="text-base font-bold">Masukkan hasilnya ke keranjang 🧺</p>
       {wrongs >= 2 && (
@@ -64,11 +64,11 @@ export function DragSum({ level, index, seed, onAnswer }: ChallengeProps) {
           Petunjuk: hitung semuanya — {'🍎'.repeat(q.a)} + {'🍎'.repeat(q.b)}
         </motion.div>
       )}
-      <div className="flex min-h-[56px] flex-wrap justify-center gap-1.5" aria-label="Tumpukan buah">{pile.map(fruit)}</div>
+      <div className="flex min-h-[56px] flex-wrap justify-center gap-1.5" role="group" aria-label="Tumpukan buah">{pile.map(fruit)}</div>
       <motion.div ref={basketRef} key={shake} animate={shake ? { x: [0, -10, 10, -6, 6, 0] } : {}} transition={{ duration: 0.4 }}
         className={`flex min-h-[96px] w-full max-w-md flex-wrap content-start justify-center gap-1.5 rounded-3xl border-4 border-dashed p-2 ${near ? 'border-leaf-600 bg-leaf-400/30' : 'border-sand-400 bg-sand-50'}`}
         {...(near ? {} : {})}>
-        <motion.div className="w-full text-center text-sm font-bold opacity-60" animate={near ? { scale: [1, 1.08, 1] } : {}} transition={{ repeat: Infinity, duration: 0.7 }}>
+        <motion.div className="w-full text-center text-sm font-bold text-sea-800" animate={near ? { scale: [1, 1.08, 1] } : {}} transition={{ repeat: Infinity, duration: 0.7 }}>
           🧺 Keranjang: {inBasket.size}
         </motion.div>
         {basket.map(fruit)}

@@ -37,14 +37,14 @@ export function ShareEqual({ level, index, seed, onAnswer }: ChallengeProps) {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="card !py-2 text-4xl font-extrabold" aria-label={`${q.total} dibagi ${q.plates}`}>{q.total} ÷ {q.plates} = ?</div>
+      <div className="card !py-2 text-4xl font-extrabold" role="img" aria-label={`${q.total} dibagi ${q.plates}`}>{q.total} ÷ {q.plates} = ?</div>
       <p className="text-base font-bold">Bagi {q.total} kue ke {q.plates} piring sama banyak. Ketuk piring! 🍰</p>
       {wrongs >= 2 && (
         <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
           Petunjuk: bagi bergantian satu-satu — piring 1, piring 2{q.plates > 2 ? ', piring 3…' : ', lalu ulangi'}
         </motion.p>
       )}
-      <div className="flex min-h-[48px] flex-wrap justify-center gap-0.5 text-2xl" aria-label={`Sisa kue ${left}`}>
+      <div className="flex min-h-[48px] flex-wrap justify-center gap-0.5 text-2xl" role="img" aria-label={`Sisa kue ${left}`}>
         {Array.from({ length: left }, (_, i) => <span key={i} aria-hidden>🍰</span>)}
         {left === 0 && !locked && <span className="text-base font-bold">Mengulang…</span>}
       </div>
