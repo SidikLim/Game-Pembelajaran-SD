@@ -27,8 +27,8 @@ export function StoryQuiz({ level, index, seed, onAnswer }: ChallengeProps) {
       <div className="card flex w-full flex-col items-center gap-1 !p-3 text-center">
         <span className="text-3xl" aria-hidden>{q.emoji}</span>
         <p className={`${q.story.length > 110 ? 'text-sm' : 'text-base'} font-bold leading-snug`} lang="en">{q.story}</p>
-        <button className="btn btn-secondary relative !min-h-[40px] !px-3 !text-sm" onClick={() => say(q.story)} aria-label="Dengarkan cerita">
-          🔊 Dengar cerita
+        <button className="btn btn-secondary relative !min-h-[40px] !px-3 !text-sm" onClick={() => say(q.story)}>
+          <span aria-hidden>🔊</span> Dengar cerita
           {wave > 0 && [0, 1].map((r) => (
             <motion.span key={`${wave}-${r}`} aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border-4 border-sea-400"
               initial={{ scale: 1, opacity: 0.8 }} animate={{ scale: 1.5 + r * 0.25, opacity: 0 }} transition={{ duration: 0.8, delay: r * 0.15 }} />
@@ -42,12 +42,12 @@ export function StoryQuiz({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className="flex w-full flex-col gap-1.5">
-        {q.options.map((a, i) => {
+        {q.options.map((a) => {
           const wrong = wrongPicks.includes(a);
           return (
-            <motion.button key={a} onClick={() => choose(a)} disabled={wrong || locked} whileTap={{ scale: 0.97 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={a} onClick={() => choose(a)} disabled={wrong || locked} whileTap={{ scale: 0.97 }} data-choice=""
               animate={picked === a && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[48px] !text-base ${wrong ? 'opacity-30' : ''} ${locked && a === q.answer ? '!bg-leaf-600' : ''}`}>{a}</motion.button>
+              className={`btn btn-secondary !min-h-[48px] !text-base ${wrong ? 'opacity-30' : ''} ${locked && a === q.answer ? '!bg-leaf-700' : ''}`}>{a}</motion.button>
           );
         })}
       </div>

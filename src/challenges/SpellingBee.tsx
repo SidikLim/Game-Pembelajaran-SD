@@ -51,9 +51,9 @@ export function SpellingBee({ level, index, seed, onAnswer }: ChallengeProps) {
   return (
     <div className="flex w-full flex-col items-center gap-3">
       <div className="card flex flex-col items-center gap-1 !py-2">
-        <div className="text-7xl" aria-label="Gambar kata">{q.entry.emoji}</div>
-        <button className="btn btn-secondary relative" onClick={() => say(word)} aria-label="Dengarkan kata">
-          🔊 Dengar
+        <div className="text-7xl" role="img" aria-label="Gambar kata">{q.entry.emoji}</div>
+        <button className="btn btn-secondary relative" onClick={() => say(word)}>
+          <span aria-hidden>🔊</span> Dengar
           {wave > 0 && [0, 1].map((r) => (
             <motion.span key={`${wave}-${r}`} className="pointer-events-none absolute inset-0 rounded-2xl border-4 border-sea-400"
               initial={{ scale: 1, opacity: 0.8 }} animate={{ scale: 1.6 + r * 0.3, opacity: 0 }} transition={{ duration: 0.8, delay: r * 0.15 }} />
@@ -75,7 +75,7 @@ export function SpellingBee({ level, index, seed, onAnswer }: ChallengeProps) {
       <div className="flex flex-wrap justify-center gap-3">
         {q.letters.map((c, i) => (
           <motion.button key={i} whileTap={{ scale: 0.9 }} whileHover={{ y: -3 }} onClick={() => place(i)} disabled={used.has(i) || (hintOn && i === firstTile)}
-            className={`grid h-14 w-14 place-items-center rounded-2xl bg-coral-400 text-3xl font-extrabold text-white shadow-chunky ${used.has(i) || (hintOn && i === firstTile) ? 'opacity-20' : ''}`}>
+            className={`grid h-14 w-14 place-items-center rounded-2xl bg-coral-600 text-3xl font-extrabold text-white shadow-chunky ${used.has(i) || (hintOn && i === firstTile) ? 'opacity-20' : ''}`}>
             {c}
           </motion.button>
         ))}

@@ -27,11 +27,11 @@ export function BalloonSub({ level, index, seed, onAnswer }: ChallengeProps) {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="card !py-2 text-4xl font-extrabold" aria-label={`${q.a} dikurangi ${q.b}`}>{q.a} − {q.b} = ?</div>
+      <div className="card !py-2 text-4xl font-extrabold" role="img" aria-label={`${q.a} dikurangi ${q.b}`}>{q.a} − {q.b} = ?</div>
       <p className="text-base font-bold" aria-live="polite">
         {phase === 'pop' ? `Pecahkan ${q.b - popped.size} balon lagi 🎈` : 'Berapa balon yang tersisa?'}
       </p>
-      <div className="flex min-h-[120px] flex-wrap justify-center gap-1" aria-label="Balon">
+      <div className="flex min-h-[120px] flex-wrap justify-center gap-1" role="group" aria-label="Balon">
         <AnimatePresence>
           {Array.from({ length: q.a }, (_, i) => i).filter((i) => !popped.has(i)).map((i) => (
             <motion.button key={i} layout onClick={() => pop(i)} disabled={phase !== 'pop'} aria-label="Pecahkan balon"
@@ -48,11 +48,11 @@ export function BalloonSub({ level, index, seed, onAnswer }: ChallengeProps) {
       )}
       {phase === 'answer' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="flex gap-3">
-          {q.options.map((n, i) => {
+          {q.options.map((n) => {
             const wrong = wrongPicks.includes(n);
             return (
-              <motion.button key={n} onClick={() => choose(n)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} aria-label={`Pilihan ${i + 1}`}
-                className={`btn btn-secondary !min-h-[72px] !min-w-[72px] !text-4xl ${wrong ? 'opacity-30' : ''} ${locked && n === q.answer ? '!bg-leaf-600' : ''}`}>
+              <motion.button key={n} onClick={() => choose(n)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} data-choice=""
+                className={`btn btn-secondary !min-h-[72px] !min-w-[72px] !text-4xl ${wrong ? 'opacity-30' : ''} ${locked && n === q.answer ? '!bg-leaf-700' : ''}`}>
                 {n}
               </motion.button>
             );

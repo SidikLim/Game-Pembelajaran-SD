@@ -23,9 +23,9 @@ export function Multiply({ level, index, seed, onAnswer }: ChallengeProps) {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="card !py-2 text-4xl font-extrabold" aria-label={`${q.a} kali ${q.b}`}>{q.a} × {q.b} = ?</div>
+      <div className="card !py-2 text-4xl font-extrabold" role="img" aria-label={`${q.a} kali ${q.b}`}>{q.a} × {q.b} = ?</div>
       <p className="text-base font-bold">{q.a} piring, tiap piring {q.b} kue. Ada berapa kue? 🍰</p>
-      <div className="flex w-full flex-wrap justify-center gap-2" aria-label="Piring berisi kue">
+      <div className="flex w-full flex-wrap justify-center gap-2" role="group" aria-label="Piring berisi kue">
         {Array.from({ length: q.a }, (_, i) => (
           <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: i * 0.08 }}
             className="flex min-h-[56px] min-w-[64px] max-w-[30%] flex-wrap content-center justify-center rounded-full border-4 border-sand-400 bg-white p-1.5 text-2xl">
@@ -39,12 +39,12 @@ export function Multiply({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className="flex gap-3">
-        {q.options.map((n, i) => {
+        {q.options.map((n) => {
           const wrong = wrongPicks.includes(n);
           return (
-            <motion.button key={n} onClick={() => choose(n)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={n} onClick={() => choose(n)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} data-choice=""
               animate={picked === n && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[64px] !min-w-[72px] !text-3xl ${wrong ? 'opacity-30' : ''} ${locked && n === q.answer ? '!bg-leaf-600' : ''}`}>{n}</motion.button>
+              className={`btn btn-secondary !min-h-[64px] !min-w-[72px] !text-3xl ${wrong ? 'opacity-30' : ''} ${locked && n === q.answer ? '!bg-leaf-700' : ''}`}>{n}</motion.button>
           );
         })}
       </div>

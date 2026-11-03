@@ -51,12 +51,12 @@ export function ClockRead({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className="flex gap-2">
-        {q.options.map((t, i) => {
+        {q.options.map((t) => {
           const wrong = wrongPicks.includes(t);
           return (
-            <motion.button key={t} onClick={() => choose(t)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={t} onClick={() => choose(t)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} data-choice=""
               animate={picked === t && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[64px] !px-4 !text-3xl tabular-nums ${wrong ? 'opacity-30' : ''} ${locked && t === q.answer ? '!bg-leaf-600' : ''}`}>{t}</motion.button>
+              className={`btn btn-secondary !min-h-[64px] !px-4 !text-3xl tabular-nums ${wrong ? 'opacity-30' : ''} ${locked && t === q.answer ? '!bg-leaf-700' : ''}`}>{t}</motion.button>
           );
         })}
       </div>

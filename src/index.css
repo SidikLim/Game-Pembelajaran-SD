@@ -14,7 +14,7 @@ body {
          text-white shadow-chunky transition active:translate-y-1 active:shadow-none
          focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-sea-800;
 }
-.btn-primary { @apply bg-leaf-400; }
+.btn-primary { @apply bg-leaf-700; }
 .btn-secondary { @apply bg-sea-600; }
 .btn-ghost { @apply bg-white text-sea-800; }
 .card { @apply rounded-3xl bg-white/90 p-5 shadow-chunky; }

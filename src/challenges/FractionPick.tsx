@@ -26,7 +26,7 @@ function Pizza({ slices, colored, size }: { slices: number; colored: boolean[]; 
 
 function Frac({ num, den }: { num: number; den: number }) {
   return (
-    <span className="inline-flex flex-col items-center text-4xl font-extrabold leading-none" aria-label={`${num} per ${den}`}>
+    <span className="inline-flex flex-col items-center text-4xl font-extrabold leading-none" role="img" aria-label={`${num} per ${den}`}>
       <span>{num}</span><span className="my-1 h-1 w-9 rounded bg-current" /><span>{den}</span>
     </span>
   );
@@ -59,10 +59,10 @@ export function FractionPick({ level, index, seed, onAnswer }: ChallengeProps) {
         </motion.p>
       )}
       <div className="flex gap-3">
-        {q.options.map((o, i) => {
+        {q.options.map((o) => {
           const wrong = wrongPicks.includes(o.id);
           return (
-            <motion.button key={o.id} onClick={() => choose(o.id)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={o.id} onClick={() => choose(o.id)} disabled={wrong || locked} whileTap={{ scale: 0.93 }} data-choice=""
               animate={picked === o.id && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
               className={`card grid min-h-[84px] min-w-[84px] place-items-center border-4 !p-3 ${locked && o.id === q.answerId ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
               <Frac num={o.num} den={o.den} />

@@ -15,7 +15,7 @@ function VerbAnim({ verb, size }: { verb: Verb; size: number }) {
     case 'jump': return <motion.div style={f} animate={{ y: [0, -size / 2, 0] }} transition={{ ...loop, duration: 0.9 }}>🤸</motion.div>;
     case 'sleep': return (
       <div className="relative" style={f}>🛌
-        <motion.span className="absolute -top-1 right-0 font-extrabold text-sea-600" style={{ fontSize: size / 2.5 }} animate={{ y: [0, -size / 3], opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 1.6 }}>Z</motion.span>
+        <motion.span className="absolute -top-1 right-0" style={{ fontSize: size / 2.5 }} animate={{ y: [0, -size / 3], opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 1.6 }}>💤</motion.span>
       </div>);
     case 'eat': return (
       <div className="flex items-center" style={f}>😋
@@ -56,8 +56,8 @@ export function ActionVerb({ level, index, seed, onAnswer }: ChallengeProps) {
       <div className="card flex min-h-[104px] w-full flex-col items-center justify-center gap-2 !py-3">
         {mode === 'see'
           ? <VerbAnim verb={q.verb} size={72} />
-          : <span className="text-5xl font-extrabold tracking-wide" aria-label={`Kata ${q.verb}`}>{label(q.verb)}</span>}
-        <button className="btn btn-secondary !min-h-[48px] !px-4 !text-base" onClick={() => say(q.verb)} aria-label="Dengarkan">🔊 Dengar</button>
+          : <span className="text-5xl font-extrabold tracking-wide" role="img" aria-label={`Kata ${q.verb}`}>{label(q.verb)}</span>}
+        <button className="btn btn-secondary !min-h-[48px] !px-4 !text-base" onClick={() => say(q.verb)}><span aria-hidden>🔊</span> Dengar</button>
       </div>
       <p className="text-base font-bold">{mode === 'see' ? 'Apa yang sedang dilakukan? Pilih katanya 👇' : 'Pilih gerakan yang cocok 👇'}</p>
       {wrongPicks.length >= 2 && (
@@ -70,10 +70,10 @@ export function ActionVerb({ level, index, seed, onAnswer }: ChallengeProps) {
           const wrong = wrongPicks.includes(v);
           const right = locked && v === q.verb;
           return (
-            <motion.button key={v} onClick={() => choose(v)} disabled={wrong || locked} whileTap={{ scale: 0.96 }} aria-label={`Pilihan ${i + 1}`}
+            <motion.button key={v} onClick={() => choose(v)} disabled={wrong || locked} whileTap={{ scale: 0.96 }} aria-label={mode === 'see' ? undefined : `Pilihan ${i + 1}`} data-choice=""
               animate={picked === v && wrong ? { x: [0, -10, 10, -6, 6, 0] } : right ? { scale: [1, 1.06, 1] } : {}}
               className={`card grid min-h-[60px] place-items-center border-4 !p-2 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
-              {mode === 'see' ? <span className="text-xl font-extrabold">{label(v)}</span> : <VerbAnim verb={v} size={44} />}
+              {mode === 'see' ? <span className="text-xl font-extrabold">{label(v)}</span> : <div aria-hidden><VerbAnim verb={v} size={44} /></div>}
             </motion.button>
           );
         })}

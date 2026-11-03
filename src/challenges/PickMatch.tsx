@@ -8,8 +8,8 @@ import type { ChallengeProps } from './types';
 function OptionFace({ o }: { o: PickOption }) {
   if (o.text) return <span className="text-5xl font-extrabold">{o.text}</span>;
   if (o.color) return <span className="block h-14 w-14 rounded-full border-4 border-white shadow-md" style={{ background: o.color }} />;
-  if (o.count) return <span className="flex max-w-[9rem] flex-wrap justify-center text-2xl">{Array.from({ length: o.count }, (_, k) => <span key={k}>{o.emoji}</span>)}</span>;
-  return <span className="text-5xl">{o.emoji}</span>;
+  if (o.count) return <span aria-hidden className="flex max-w-[9rem] flex-wrap justify-center text-2xl">{Array.from({ length: o.count }, (_, k) => <span key={k}>{o.emoji}</span>)}</span>;
+  return <span aria-hidden className="text-5xl">{o.emoji}</span>;
 }
 
 /** Cocokkan: dengar bunyi huruf / baca kata Inggris, lalu pilih huruf atau gambar yang tepat. */
@@ -36,9 +36,9 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <div className="card flex flex-col items-center gap-2 !py-3">
-        {q.promptText && <span className={`${q.promptText.length > 8 ? 'text-3xl' : q.promptText.length > 6 ? 'text-4xl' : 'text-5xl'} font-extrabold tracking-wide`} aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
-        <button className="btn btn-secondary relative" onClick={() => say(q.speak)} aria-label="Dengarkan">
-          🔊 Dengar
+        {q.promptText && <span className={`${q.promptText.length > 8 ? 'text-3xl' : q.promptText.length > 6 ? 'text-4xl' : 'text-5xl'} font-extrabold tracking-wide`} role="img" aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
+        <button className="btn btn-secondary relative" onClick={() => say(q.speak)}>
+          <span aria-hidden>🔊</span> Dengar
           {wave > 0 && [0, 1].map((r) => (
             <motion.span key={`${wave}-${r}`} aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border-4 border-sea-400"
               initial={{ scale: 1, opacity: 0.8 }} animate={{ scale: 1.6 + r * 0.3, opacity: 0 }} transition={{ duration: 0.8, delay: r * 0.15 }} />
@@ -58,7 +58,7 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
           return (
             <motion.button key={o.id} onClick={() => choose(o)} disabled={wrong || locked} whileTap={{ scale: 0.95 }}
               animate={picked === o.id && wrong ? { x: [0, -10, 10, -6, 6, 0] } : right ? { scale: [1, 1.08, 1] } : {}}
-              aria-label={`Pilihan ${i + 1}`}
+              aria-label={o.text ? undefined : `Pilihan ${i + 1}`} data-choice=""
               className={`card grid min-h-[88px] place-items-center border-4 !p-2 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
               <OptionFace o={o} />
             </motion.button>
