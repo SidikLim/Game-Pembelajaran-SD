@@ -47,26 +47,26 @@ export function DragSum({ level, index, seed, onAnswer }: ChallengeProps) {
     <motion.button key={id} layout drag={!locked} dragSnapToOrigin dragElastic={0.2} whileDrag={{ scale: 1.1, zIndex: 20, boxShadow: '0 14px 20px rgba(11,48,64,0.35)' }}
       onDrag={(_, i) => setNear(over(i.point, 40))} onDragEnd={(_, i) => { setNear(false); if (over(i.point)) toggle(id, true); else if (inBasket.has(id)) toggle(id, false); }}
       onTap={() => toggle(id)} onKeyDown={key(id)} aria-label={inBasket.has(id) ? 'Keluarkan buah dari keranjang' : 'Masukkan buah ke keranjang'}
-      className="grid h-16 w-16 place-items-center rounded-full bg-white text-4xl shadow-md touch-none">🍎</motion.button>
+      className="grid h-14 w-14 place-items-center rounded-full bg-white text-3xl shadow-md touch-none">🍎</motion.button>
   );
 
   const pile = Array.from({ length: PILE }, (_, i) => i).filter((i) => !inBasket.has(i));
   const basket = [...inBasket];
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
-      <div className="card flex flex-wrap items-center justify-center gap-3 text-5xl font-extrabold">
+    <div className="flex w-full flex-col items-center gap-2">
+      <div className="card flex flex-wrap items-center justify-center gap-3 !py-2 text-4xl font-extrabold">
         <span aria-label={`${q.a} ditambah ${q.b}`}>{q.a} + {q.b} = ?</span>
       </div>
-      <p className="text-lg font-bold">Masukkan hasilnya ke keranjang 🧺</p>
+      <p className="text-base font-bold">Masukkan hasilnya ke keranjang 🧺</p>
       {wrongs >= 2 && (
-        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-4 py-2 text-center text-lg font-bold">
+        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
           Petunjuk: hitung semuanya — {'🍎'.repeat(q.a)} + {'🍎'.repeat(q.b)}
         </motion.div>
       )}
-      <div className="flex min-h-[72px] flex-wrap justify-center gap-2" aria-label="Tumpukan buah">{pile.map(fruit)}</div>
+      <div className="flex min-h-[56px] flex-wrap justify-center gap-1.5" aria-label="Tumpukan buah">{pile.map(fruit)}</div>
       <motion.div ref={basketRef} key={shake} animate={shake ? { x: [0, -10, 10, -6, 6, 0] } : {}} transition={{ duration: 0.4 }}
-        className={`flex min-h-[120px] w-full max-w-md flex-wrap content-start justify-center gap-2 rounded-3xl border-4 border-dashed p-3 ${near ? 'border-leaf-600 bg-leaf-400/30' : 'border-sand-400 bg-sand-50'}`}
+        className={`flex min-h-[96px] w-full max-w-md flex-wrap content-start justify-center gap-1.5 rounded-3xl border-4 border-dashed p-2 ${near ? 'border-leaf-600 bg-leaf-400/30' : 'border-sand-400 bg-sand-50'}`}
         {...(near ? {} : {})}>
         <motion.div className="w-full text-center text-sm font-bold opacity-60" animate={near ? { scale: [1, 1.08, 1] } : {}} transition={{ repeat: Infinity, duration: 0.7 }}>
           🧺 Keranjang: {inBasket.size}

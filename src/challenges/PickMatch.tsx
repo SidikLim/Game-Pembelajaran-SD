@@ -6,10 +6,10 @@ import { sfx, speak } from '../lib/audio';
 import type { ChallengeProps } from './types';
 
 function OptionFace({ o }: { o: PickOption }) {
-  if (o.text) return <span className="text-6xl font-extrabold">{o.text}</span>;
-  if (o.color) return <span className="block h-16 w-16 rounded-full border-4 border-white shadow-md" style={{ background: o.color }} />;
+  if (o.text) return <span className="text-5xl font-extrabold">{o.text}</span>;
+  if (o.color) return <span className="block h-14 w-14 rounded-full border-4 border-white shadow-md" style={{ background: o.color }} />;
   if (o.count) return <span className="flex max-w-[9rem] flex-wrap justify-center text-2xl">{Array.from({ length: o.count }, (_, k) => <span key={k}>{o.emoji}</span>)}</span>;
-  return <span className="text-6xl">{o.emoji}</span>;
+  return <span className="text-5xl">{o.emoji}</span>;
 }
 
 /** Cocokkan: dengar bunyi huruf / baca kata Inggris, lalu pilih huruf atau gambar yang tepat. */
@@ -34,8 +34,8 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
-      <div className="card flex flex-col items-center gap-3">
+    <div className="flex w-full flex-col items-center gap-2">
+      <div className="card flex flex-col items-center gap-2 !py-3">
         {q.promptText && <span className="text-5xl font-extrabold tracking-wide" aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
         <button className="btn btn-secondary relative" onClick={() => say(q.speak)} aria-label="Dengarkan">
           🔊 Dengar
@@ -45,13 +45,13 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
           ))}
         </button>
       </div>
-      <p className="text-lg font-bold">{q.promptText ? 'Pilih gambar yang cocok 👆' : 'Dengarkan, lalu pilih hurufnya 👂'}</p>
+      <p className="text-base font-bold">{q.promptText ? 'Pilih gambar yang cocok 👆' : 'Dengarkan, lalu pilih hurufnya 👂'}</p>
       {wrongPicks.length >= 2 && (
-        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-4 py-2 text-center text-lg font-bold">
+        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
           Petunjuk: {q.hint}
         </motion.p>
       )}
-      <div className="grid w-full grid-cols-2 gap-3">
+      <div className="grid w-full grid-cols-2 gap-2">
         {q.options.map((o, i) => {
           const wrong = wrongPicks.includes(o.id);
           const right = locked && o.id === q.answerId;
@@ -59,7 +59,7 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
             <motion.button key={o.id} onClick={() => choose(o)} disabled={wrong || locked} whileTap={{ scale: 0.95 }}
               animate={picked === o.id && wrong ? { x: [0, -10, 10, -6, 6, 0] } : right ? { scale: [1, 1.08, 1] } : {}}
               aria-label={`Pilihan ${i + 1}`}
-              className={`card grid min-h-[110px] place-items-center border-4 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
+              className={`card grid min-h-[88px] place-items-center border-4 !p-2 ${right ? 'border-leaf-400' : 'border-transparent'} ${wrong ? 'opacity-30' : ''}`}>
               <OptionFace o={o} />
             </motion.button>
           );

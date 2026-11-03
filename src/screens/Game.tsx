@@ -14,10 +14,23 @@ import type { HatColor, LevelConfig, MascotState, RunStats } from '../lib/types'
 
 const CHALLENGES: Record<string, (p: ChallengeProps) => JSX.Element> = { countPick: CountPick, pickMatch: PickMatch, balloonSub: BalloonSub, shapePuzzle: ShapePuzzle, dragSum: DragSum, spellingBee: SpellingBee };
 
+/** Ukuran maskot menyesuaikan tinggi layar agar soal selalu muat tanpa scroll. */
+function useMascotSize() {
+  const pick = () => (window.innerHeight >= 760 ? 104 : window.innerHeight >= 680 ? 84 : 68);
+  const [size, setSize] = useState(pick);
+  useEffect(() => {
+    const on = () => setSize(pick());
+    window.addEventListener('resize', on);
+    return () => window.removeEventListener('resize', on);
+  }, []);
+  return size;
+}
+
 interface Props { level: LevelConfig; hat: HatColor; onFinish: (stats: RunStats) => void; onExit: () => void }
 
 /** Satu putaran level: intro -> soal berulang (aksi, umpan balik instan, progres) -> selesai. */
 export function Game({ level, hat, onFinish, onExit }: Props) {
+  const mascotSize = useMascotSize();
   const seed = useMemo(() => Math.floor(Math.random() * 1e9), []);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
@@ -55,14 +68,14 @@ export function Game({ level, hat, onFinish, onExit }: Props) {
   }, [stats, index, level.questions, onFinish]);
 
   return (
-    <main className="relative mx-auto flex min-h-full max-w-xl flex-col items-center gap-3 px-4 pb-8 pt-4">
+    <main className="relative mx-auto flex min-h-[100dvh] max-w-xl flex-col items-center gap-2 px-4 pb-4 pt-3">
       <header className="flex w-full items-center gap-3">
         <button className="btn btn-ghost !min-h-[48px] !px-4" onClick={onExit} aria-label="Kembali ke peta level">←</button>
         <div className="flex-1"><ProgressBar value={started ? (mascot === 'correct' ? index + 1 : index) : 0} max={level.questions} /></div>
         <span className="text-lg font-extrabold">{Math.min(index + 1, level.questions)}/{level.questions}</span>
       </header>
       <ComboPop label={comboText.label} nonce={comboText.n} />
-      <Mascot state={started ? mascot : 'idle'} hat={hat} size={120} />
+      <Mascot state={started ? mascot : 'idle'} hat={hat} size={mascotSize} />
       {started && <Challenge key={index} level={level} index={index} seed={seed} onAnswer={handleAnswer} />}
       {!started && (
         <Modal>

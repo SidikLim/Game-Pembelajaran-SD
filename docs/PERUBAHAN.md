@@ -2,6 +2,13 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.4.1 — Layar permainan lebih ringkas (2026-11-03)
+### Berubah
+- Semua soal kini muat dalam satu layar HP tanpa scroll (diukur di 412×800 dan 360×640 untuk 11 jenis soal, termasuk kasus terpadat: 20 apel, keranjang penuh + petunjuk, 6 keping bentuk, 4 pilihan gambar).
+- Ukuran maskot di layar permainan menyesuaikan tinggi layar (104/84/68 px); jarak antar elemen, kartu soal, dan petunjuk dipadatkan di semua tantangan.
+- Ukuran emoji di soal Mengenal Angka seragam dalam satu soal, sehingga ukurannya tidak membocorkan jawaban.
+- Layar yang lebih tinggi (≥ 760 px) mendapat kartu pilihan sedikit lebih lega.
+
 ## v0.4.0 — Matematika Level 7–10 (2026-11-02)
 ### Ditambahkan
 - **BalloonSub** (Matematika L7–8, "Mengurang dengan Balon"): anak memecahkan b balon dari a balon, lalu memilih jumlah yang tersisa dari 3 pilihan. L7 memakai a ≤ 5, L8 memakai a ≤ 10; hasil selalu ≥ 1. Petunjuk "hitung balon yang masih ada" muncul setelah 2 kali salah.
