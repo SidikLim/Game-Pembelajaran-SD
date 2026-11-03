@@ -7,7 +7,14 @@ Saat anak menekan 🔊 atau menyentuh huruf/gambar, game memutar suara dengan ur
 2. **Web Speech API** (suara bawaan HP) bila file untuk ucapan itu tidak ada atau gagal diputar.
 3. Tanpa suara bila keduanya tidak tersedia.
 
-Jadi file suara boleh ditambahkan **sedikit demi sedikit**; ucapan tanpa file tetap bersuara lewat perangkat. Saat ini folder `public/audio/` belum berisi rekaman, sehingga semua ucapan memakai suara perangkat.
+Jadi file suara boleh ditambahkan **sedikit demi sedikit**; ucapan tanpa file tetap bersuara lewat perangkat.
+
+## Kondisi saat ini
+`public/audio/` berisi **215 file suara sintetis** (semua ucapan) yang dibuat dengan Opsi B di bawah:
+- Mesin: Piper TTS 2023.11.14-2; suara: `en_US-lessac-medium` (rilis `v0.0.2`), 22 kHz → mp3 mono 24 kHz 48 kbps, ±1,9 MB.
+- **Status lisensi suara: BELUM diverifikasi.** Model Lessac dilatih dari dataset Blizzard 2013 (lisensi: https://www.cstr.ed.ac.uk/projects/blizzard/2013/lessac_blizzard2013/license.html). Baca lisensinya sebelum game dipublikasikan luas/komersial; bila tidak cocok, hapus isi `public/audio/` (game otomatis kembali ke suara perangkat) atau ganti dengan rekaman manusia (Opsi A).
+- Diperiksa otomatis: semua 215 file ada, durasi wajar (0,4–8,4 detik), tidak ada yang hening, volume seragam (puncak ≈ −3 dB). **Belum didengarkan manusia**: periksa terutama nama huruf, kata pendek, dan kalimat panjang.
+- Mengganti satu ucapan dengan rekaman manusia: taruh mp3 bernama sama di `public/audio/` (menimpa file lama); manifest tidak perlu diubah.
 
 Ada **215 ucapan** (26 nama huruf, 26 "huruf + kata contoh", 87 kata, 61 kalimat, 15 cerita). Daftar lengkap: [`daftar-ucapan.csv`](daftar-ucapan.csv) — kolom "nama file" adalah nama yang harus dipakai persis.
 

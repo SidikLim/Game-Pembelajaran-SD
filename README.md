@@ -37,7 +37,7 @@ Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapte
 Riwayat perubahan: [`docs/PERUBAHAN.md`](docs/PERUBAHAN.md). Keputusan desain: [`docs/KEPUTUSAN-DESAIN.md`](docs/KEPUTUSAN-DESAIN.md).
 
 ## Suara pengucapan
-Game memutar file rekaman di `public/audio` bila ada, dan memakai suara bawaan perangkat bila tidak. Cara merekam/membuat file: [`docs/PANDUAN-SUARA.md`](docs/PANDUAN-SUARA.md); daftar 215 ucapan: [`docs/daftar-ucapan.csv`](docs/daftar-ucapan.csv).
+Game memutar file suara di `public/audio` (saat ini 215 file sintetis, lisensi suara perlu diverifikasi) dan memakai suara bawaan perangkat bila file tidak ada. Cara merekam/membuat file: [`docs/PANDUAN-SUARA.md`](docs/PANDUAN-SUARA.md); daftar 215 ucapan: [`docs/daftar-ucapan.csv`](docs/daftar-ucapan.csv).
 
 ## Struktur
 ```

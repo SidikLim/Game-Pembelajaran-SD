@@ -2,6 +2,20 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.7.1 — Suara sintetis untuk seluruh ucapan (2026-11-03)
+### Ditambahkan
+- `public/audio/`: 215 file mp3 + `manifest.json` untuk semua ucapan, dibuat dengan `scripts/generate-audio.ts` (Piper TTS, suara `en_US-lessac-medium`). Seluruh pengucapan (huruf, kata, kalimat, cerita) kini memakai suara yang sama di semua perangkat dan bekerja offline.
+- Service worker menyimpan semua file (precache total ±1,9 MB untuk 223 berkas).
+
+### Diuji
+- Pemeriksaan otomatis 215 file: durasi 0,4–8,4 detik (median 0,67), tidak ada yang hening, volume seragam.
+- Browser: huruf + kata contoh (L1), kata hewan (L4), Spelling Bee (L9), cerita (L27), dan kalimat listening (L19) memutar file (HTTP 200), tanpa suara perangkat dan tanpa permintaan gagal.
+- 36 tes lolos, termasuk pemeriksaan manifest lengkap.
+
+### Perlu diperhatikan
+- **Lisensi model suara belum diverifikasi** (lihat `docs/PANDUAN-SUARA.md`). Suara belum didengarkan manusia.
+- Nama huruf dilafalkan lewat ejaan (A → "ay", W → "double you") karena TTS membaca huruf tunggal sebagai kata biasa.
+
 ## v0.7.0 — Dukungan file suara pengucapan (2026-11-03)
 ### Ditambahkan
 - Pemutar suara berprioritas: **file rekaman** di `public/audio` (lewat `manifest.json`) → Web Speech API → senyap. Bila file gagal diputar (rusak/404), otomatis jatuh ke suara perangkat. Tombol bisu menghentikan keduanya.
@@ -12,9 +26,6 @@ Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini
 
 ### Diuji di browser (dengan file uji sementara, tidak di-commit)
 - Ucapan yang ada di manifest memutar file tanpa memanggil suara perangkat; file 404 jatuh ke suara perangkat; mode bisu tidak memutar apa pun.
-
-### Belum ada
-- **Folder `public/audio` masih kosong**: belum ada rekaman maupun suara sintetis di repo, sehingga perilaku game belum berubah (masih Web Speech API). Isi dengan rekaman manusia (Opsi A) atau jalankan generator (Opsi B) setelah memeriksa lisensi model suaranya.
 
 ## v0.6.0 — Tingkat 3 (kelas 5–6), Level 21–30 (2026-11-03)
 ### Matematika (komponen **ArithQuiz** + pembangkit soal di `lib/questions.ts`)
@@ -129,7 +140,7 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alam
 - Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini tidak ada level yang terdampak, aturan disiapkan untuk level berikutnya). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Mengisi `public/audio` (rekaman manusia atau suara sintetis berlisensi jelas), tinjauan isi soal oleh guru, ikon PWA PNG, dan audit Lighthouse.
+1. Verifikasi lisensi suara (atau ganti dengan rekaman manusia), tinjauan isi soal oleh guru, ikon PWA PNG, dan audit Lighthouse.
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).
