@@ -24,10 +24,10 @@ export function StoryQuiz({ level, index, seed, onAnswer }: ChallengeProps) {
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
-      <div className="card flex w-full flex-col items-center gap-1 !py-3 text-center">
-        <span className="text-4xl" aria-hidden>{q.emoji}</span>
-        <p className="text-base font-bold leading-snug" lang="en">{q.story}</p>
-        <button className="btn btn-secondary relative !min-h-[44px] !px-4 !text-base" onClick={() => say(q.story)} aria-label="Dengarkan cerita">
+      <div className="card flex w-full flex-col items-center gap-1 !p-3 text-center">
+        <span className="text-3xl" aria-hidden>{q.emoji}</span>
+        <p className={`${q.story.length > 110 ? 'text-sm' : 'text-base'} font-bold leading-snug`} lang="en">{q.story}</p>
+        <button className="btn btn-secondary relative !min-h-[40px] !px-3 !text-sm" onClick={() => say(q.story)} aria-label="Dengarkan cerita">
           🔊 Dengar cerita
           {wave > 0 && [0, 1].map((r) => (
             <motion.span key={`${wave}-${r}`} aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border-4 border-sea-400"
@@ -35,19 +35,19 @@ export function StoryQuiz({ level, index, seed, onAnswer }: ChallengeProps) {
           ))}
         </button>
       </div>
-      <p className="text-lg font-extrabold" lang="en">{q.question}</p>
+      <p className="text-base font-extrabold" lang="en">{q.question}</p>
       {wrongPicks.length >= 2 && (
-        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
+        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-sm font-bold">
           Petunjuk: baca ceritanya pelan-pelan lagi, jawabannya ada di dalam cerita 📖
         </motion.p>
       )}
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col gap-1.5">
         {q.options.map((a, i) => {
           const wrong = wrongPicks.includes(a);
           return (
             <motion.button key={a} onClick={() => choose(a)} disabled={wrong || locked} whileTap={{ scale: 0.97 }} aria-label={`Pilihan ${i + 1}`}
               animate={picked === a && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[52px] !text-lg ${wrong ? 'opacity-30' : ''} ${locked && a === q.answer ? '!bg-leaf-600' : ''}`}>{a}</motion.button>
+              className={`btn btn-secondary !min-h-[48px] !text-base ${wrong ? 'opacity-30' : ''} ${locked && a === q.answer ? '!bg-leaf-600' : ''}`}>{a}</motion.button>
           );
         })}
       </div>
