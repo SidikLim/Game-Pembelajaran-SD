@@ -2,6 +2,24 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.5.0 — Tingkat 2 (kelas 3–4), Level 11–20 (2026-11-03)
+### Matematika
+- **Multiply** (L11–13, Perkalian Dasar): a piring × b kue, pilih jumlah kue. Faktor maksimum 3 / 4 / 5.
+- **ShareEqual** (L14–16, Berbagi Rata): konsep pembagian lewat berbagi rata. Anak mengetuk piring untuk memberi satu kue, sampai semua kue terbagi sama banyak; bila tidak sama, kue dikembalikan dan dihitung salah. Piring 2 / 2–3 / 2–4, isi per piring maks. 3 / 4 / 5 (total ≤ 20).
+- **ClockRead** (L17–18, Membaca Jam): jam analog (SVG) → pilih waktu digital. L17 jam pas, L18 ditambah setengah jam.
+- **FractionPick** (L19–20, Pecahan Dasar): pizza bergambar → pilih pecahan. L19 ½ dan ¼ (2 pilihan); L20 ditambah ¾ (3 pilihan), dan ½ kadang digambar 2 dari 4 potong (pecahan senilai). Pilihan tidak pernah berupa 2/4.
+
+### Bahasa Inggris
+- **L11–13 Family & Body Parts:** memakai ulang PickMatch dengan kosakata keluarga, anggota tubuh, dan campuran.
+- **L14–16 Spelling Bee 5/6/7 huruf:** memakai ulang SpellingBee; kosakata ditambah 24 kata. Kotak huruf mengecil untuk kata ≥ 6 huruf.
+- **ActionVerb** (L17–18): L17 anak melihat karakter bergerak (run, jump, sleep, eat, swim, dance, read, sing) lalu memilih katanya; L18 membaca kata lalu memilih gerakan yang cocok. Emoji tiap gerakan sudah menjelaskan aksinya sehingga tetap jelas bila animasi dimatikan (reduced-motion).
+- **L19–20 Listening:** memakai ulang PickMatch dengan 12 kalimat pendek; kalimat hanya diperdengarkan (tidak ditulis), anak memilih gambar. Teks kalimat muncul sebagai petunjuk setelah 2 kali salah.
+- Teks kata panjang di PickMatch mengecil otomatis (mis. GRANDMOTHER).
+
+### Lainnya
+- Tes pembangkit soal untuk semua tantangan baru dan aturan buka-kunci Tingkat 2 (23 tes).
+- Diuji di browser: ke-20 level Tingkat 2 dimainkan sampai tamat di 412×800 dan 360×640 tanpa error dan tanpa scroll. Satu temuan (Action Verbs L17 kelebihan 8px di 360×640 saat petunjuk muncul) diperbaiki dengan menata 3 pilihan kata dalam satu baris.
+
 ## v0.4.1 — Layar permainan lebih ringkas (2026-11-03)
 ### Berubah
 - Semua soal kini muat dalam satu layar HP tanpa scroll (diukur di 412×800 dan 360×640 untuk 11 jenis soal, termasuk kasus terpadat: 20 apel, keranjang penuh + petunjuk, 6 keping bentuk, 4 pilihan gambar).
@@ -77,7 +95,7 @@ Settings → Pages → Build and deployment → Source: **GitHub Actions**. Alam
 - Level "Segera hadir" dianggap sudah dilewati agar progres tidak buntu (saat ini tidak ada level yang terdampak, aturan disiapkan untuk level berikutnya). Aturan ini hilang sendiri saat level-level sebelumnya dibuat.
 
 ## Rencana berikutnya
-1. Tantangan: Matematika L11–20 (perkalian, pembagian, jam, pecahan) dan Inggris L11–20 (keluarga/tubuh, spelling 5–7 huruf, kata kerja, listening).
+1. Tantangan Tingkat 3 (kelas 5–6, Level 21–30): perkalian/pembagian lanjut, desimal & persen, soal cerita; fill in the blanks, prepositions, cerita pendek.
 2. Rekam suara pengucapan (mp3) agar konsisten di Android murah/offline.
 3. Ikon PWA PNG 192/512 (maskable) & audit Lighthouse.
 4. Mode orang tua (ringkasan progres, pengaturan suara).

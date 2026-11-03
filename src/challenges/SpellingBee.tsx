@@ -60,12 +60,12 @@ export function SpellingBee({ level, index, seed, onAnswer }: ChallengeProps) {
           ))}
         </button>
       </div>
-      <motion.div key={shake} className="flex gap-2" animate={shake ? { x: [0, -10, 10, -6, 6, 0] } : {}} transition={{ duration: 0.4 }}>
+      <motion.div key={shake} className={`flex ${word.length >= 6 ? 'gap-1' : 'gap-2'}`} animate={shake ? { x: [0, -10, 10, -6, 6, 0] } : {}} transition={{ duration: 0.4 }}>
         {slots.map((tile, i) => {
           const hinted = hintOn && i === 0;
           return (
             <button key={i} onClick={() => remove(i)} aria-label={`Kotak huruf ${i + 1}`}
-              className={`grid h-14 w-12 place-items-center rounded-2xl border-4 text-3xl font-extrabold ${hinted ? 'border-sand-400 bg-sand-200' : 'border-sea-400 bg-white'}`}>
+              className={`grid ${word.length >= 6 ? 'h-12 w-10 text-2xl' : 'h-14 w-12 text-3xl'} place-items-center rounded-2xl border-4 font-extrabold ${hinted ? 'border-sand-400 bg-sand-200' : 'border-sea-400 bg-white'}`}>
               {hinted ? word[0] : tile !== null ? q.letters[tile] : ''}
             </button>
           );

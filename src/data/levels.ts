@@ -19,13 +19,13 @@ const MATH: StepDef[] = [
   { tier: 1, step: 2, from: 4, to: 6, title: 'Menjumlah di Keranjang', goal: 'Seret buah ke keranjang sesuai hasil penjumlahan', challenge: 'dragSum', params: [{ maxSum: 5 }, { maxSum: 8 }, { maxSum: 10 }] },
   { tier: 1, step: 3, from: 7, to: 8, title: 'Mengurang dengan Balon', goal: 'Pecahkan balon, lalu hitung sisanya', challenge: 'balloonSub', params: [{ maxMinuend: 5 }, { maxMinuend: 10 }] },
   { tier: 1, step: 4, from: 9, to: 10, title: 'Puzzle Bentuk', goal: 'Pasangkan lingkaran, persegi, segitiga', challenge: 'shapePuzzle', questions: 3, params: [{ perShape: 1 }, { perShape: 2 }] },
-  { tier: 2, step: 5, from: 11, to: 13, title: 'Perkalian Dasar', goal: 'Hitung kelompok gambar berulang', challenge: 'comingSoon' },
-  { tier: 2, step: 6, from: 14, to: 16, title: 'Berbagi Rata', goal: 'Bagi rata ke beberapa piring', challenge: 'comingSoon' },
-  { tier: 2, step: 7, from: 17, to: 18, title: 'Membaca Jam', goal: 'Hubungkan jarum jam dengan angka waktu', challenge: 'comingSoon' },
-  { tier: 2, step: 8, from: 19, to: 20, title: 'Pecahan Dasar', goal: 'Potong pizza menjadi ½, ¼, ¾', challenge: 'comingSoon' },
-  { tier: 3, step: 9, from: 21, to: 23, title: 'Kali & Bagi Lanjut', goal: 'Perkalian dan pembagian 1–10', challenge: 'comingSoon' },
-  { tier: 3, step: 10, from: 24, to: 26, title: 'Desimal & Persen', goal: 'Hitung diskon di toko mainan', challenge: 'comingSoon' },
-  { tier: 3, step: 11, from: 27, to: 30, title: 'Soal Cerita Petualangan', goal: 'Pilih jawaban dari cerita petualangan', challenge: 'comingSoon' },
+  { tier: 2, step: 5, from: 11, to: 13, title: 'Perkalian Dasar', goal: 'Hitung kelompok gambar berulang', challenge: 'multiply', params: [{ maxFactor: 3 }, { maxFactor: 4 }, { maxFactor: 5 }] },
+  { tier: 2, step: 6, from: 14, to: 16, title: 'Berbagi Rata', goal: 'Bagi rata kue ke beberapa piring', challenge: 'shareEqual', params: [{ maxPlates: 2, maxEach: 3 }, { maxPlates: 3, maxEach: 4 }, { maxPlates: 4, maxEach: 5 }] },
+  { tier: 2, step: 7, from: 17, to: 18, title: 'Membaca Jam', goal: 'Hubungkan jarum jam dengan angka waktu', challenge: 'clockRead', params: [{ halfHours: false }, { halfHours: true }] },
+  { tier: 2, step: 8, from: 19, to: 20, title: 'Pecahan Dasar', goal: 'Kenali ½, ¼, ¾ dari potongan pizza', challenge: 'fractionPick', params: [{ fractionLevel: 1 }, { fractionLevel: 2 }] },
+  { tier: 3, step: 9, from: 21, to: 23, title: 'Kali & Bagi Lanjut', goal: 'Perkalian dan pembagian 1–10', challenge: 'arith', params: [{ arith: 'mul', options: 3 }, { arith: 'div', options: 3 }, { arith: 'mulDiv', options: 3 }] },
+  { tier: 3, step: 10, from: 24, to: 26, title: 'Desimal & Persen', goal: 'Hitung diskon di toko mainan', challenge: 'arith', params: [{ arith: 'discountAmount', options: 3 }, { arith: 'discountPrice', options: 3 }, { arith: 'decimal', options: 3 }] },
+  { tier: 3, step: 11, from: 27, to: 30, title: 'Soal Cerita Petualangan', goal: 'Pilih jawaban dari cerita petualangan', challenge: 'arith', params: [{ arith: 'storyBasic', options: 4 }, { arith: 'storyMulDiv', options: 4 }, { arith: 'storyTwoStep', options: 4 }, { arith: 'storyMix', options: 4 }] },
 ];
 
 const ENGLISH: StepDef[] = [
@@ -33,13 +33,13 @@ const ENGLISH: StepDef[] = [
   { tier: 1, step: 2, from: 4, to: 6, title: 'Animals & Colors', goal: 'Sentuh gambar, dengar katanya', challenge: 'pickMatch', params: [{ pool: 'animals', options: 3 }, { pool: 'colors', options: 3 }, { pool: 'animalsColors', options: 4 }] },
   { tier: 1, step: 3, from: 7, to: 8, title: 'Numbers & Fruits', goal: 'Cocokkan teks dengan gambar', challenge: 'pickMatch', params: [{ pool: 'numbers', options: 3 }, { pool: 'numbersFruits', options: 4 }] },
   { tier: 1, step: 4, from: 9, to: 10, title: 'Spelling Bee', goal: 'Susun huruf acak menjadi kata', challenge: 'spellingBee', params: [{ wordLength: 3 }, { wordLength: 4 }] },
-  { tier: 2, step: 5, from: 11, to: 13, title: 'Family & Body Parts', goal: 'Kenali anggota keluarga dan tubuh', challenge: 'comingSoon' },
-  { tier: 2, step: 6, from: 14, to: 16, title: 'Spelling Bee 5–7 Huruf', goal: 'Susun kata yang lebih panjang', challenge: 'comingSoon' },
-  { tier: 2, step: 7, from: 17, to: 18, title: 'Action Verbs', goal: 'Lihat karakter bergerak sesuai kata', challenge: 'comingSoon' },
-  { tier: 2, step: 8, from: 19, to: 20, title: 'Listening', goal: 'Dengar kalimat, pilih gambar', challenge: 'comingSoon' },
-  { tier: 3, step: 9, from: 21, to: 23, title: 'Fill in the Blanks', goal: 'Lengkapi kalimat rumpang', challenge: 'comingSoon' },
-  { tier: 3, step: 10, from: 24, to: 26, title: 'Prepositions', goal: 'In, On, Under, Behind', challenge: 'comingSoon' },
-  { tier: 3, step: 11, from: 27, to: 30, title: 'Short Stories', goal: 'Baca cerita bergambar, jawab pertanyaan', challenge: 'comingSoon' },
+  { tier: 2, step: 5, from: 11, to: 13, title: 'Family & Body Parts', goal: 'Kenali anggota keluarga dan tubuh', challenge: 'pickMatch', params: [{ pool: 'family', options: 3 }, { pool: 'body', options: 3 }, { pool: 'familyBody', options: 4 }] },
+  { tier: 2, step: 6, from: 14, to: 16, title: 'Spelling Bee 5–7 Huruf', goal: 'Susun kata yang lebih panjang', challenge: 'spellingBee', params: [{ wordLength: 5 }, { wordLength: 6 }, { wordLength: 7 }] },
+  { tier: 2, step: 7, from: 17, to: 18, title: 'Action Verbs', goal: 'Cocokkan gerakan dengan kata kerja', challenge: 'actionVerb', params: [{ verbMode: 'see', options: 3 }, { verbMode: 'read', options: 4 }] },
+  { tier: 2, step: 8, from: 19, to: 20, title: 'Listening', goal: 'Dengar kalimat, pilih gambar', challenge: 'pickMatch', params: [{ pool: 'sentences', options: 3 }, { pool: 'sentences', options: 4 }] },
+  { tier: 3, step: 9, from: 21, to: 23, title: 'Fill in the Blanks', goal: 'Lengkapi kalimat rumpang', challenge: 'fillBlank', params: [{ fillTier: 1 }, { fillTier: 2 }, { fillTier: 3 }] },
+  { tier: 3, step: 10, from: 24, to: 26, title: 'Prepositions', goal: 'In, On, Under, Behind', challenge: 'preposition', params: [{ preps: ['in', 'on', 'under'], options: 3 }, { preps: ['in', 'on', 'under', 'behind'], options: 4 }, { preps: ['in', 'on', 'under', 'behind'], options: 4, sentenceMode: true }] },
+  { tier: 3, step: 11, from: 27, to: 30, title: 'Short Stories', goal: 'Baca cerita bergambar, jawab pertanyaan', challenge: 'story', params: [{ storyLevel: 1 }, { storyLevel: 2 }, { storyLevel: 3 }, { storyLevel: 4 }] },
 ];
 
 function build(subject: Subject, defs: StepDef[]): LevelConfig[] {
