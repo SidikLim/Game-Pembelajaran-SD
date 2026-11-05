@@ -14,14 +14,14 @@ function OptionFace({ o }: { o: PickOption }) {
 
 /** Cocokkan: dengar bunyi huruf / baca kata Inggris, lalu pilih huruf atau gambar yang tepat. */
 export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
-  const { pool = 'letters', options = 3, letterCount = 26 } = level.params;
-  const q = useMemo(() => makePickQuestions(seeded(seed), level.questions, pool, options, letterCount)[index], [level, index, seed, pool, options, letterCount]);
+  const { pool = 'letters', options = 3, letterCount = 26, letterSet, lang = 'en' } = level.params;
+  const q = useMemo(() => makePickQuestions(seeded(seed), level.questions, pool, options, letterCount, letterSet)[index], [level, index, seed, pool, options, letterCount, letterSet]);
   const [wrongPicks, setWrongPicks] = useState<string[]>([]);
   const [picked, setPicked] = useState<string | null>(null);
   const [locked, setLocked] = useState(false);
   const [wave, setWave] = useState(0);
 
-  const say = (text: string) => { setWave((w) => w + 1); if (!speak(text)) sfx.tap(); };
+  const say = (text: string) => { setWave((w) => w + 1); if (!speak(text, lang)) sfx.tap(); };
 
   const choose = (o: PickOption) => {
     if (locked || wrongPicks.includes(o.id)) return;
@@ -36,7 +36,7 @@ export function PickMatch({ level, index, seed, onAnswer }: ChallengeProps) {
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <div className="card flex flex-col items-center gap-2 !py-3">
-        {q.promptText && <span className={`${q.promptText.length > 8 ? 'text-3xl' : q.promptText.length > 6 ? 'text-4xl' : 'text-5xl'} font-extrabold tracking-wide`} role="img" aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
+        {q.promptText && <span className={`${q.promptText.length > 16 ? 'text-2xl leading-snug' : q.promptText.length > 8 ? 'text-3xl' : q.promptText.length > 6 ? 'text-4xl' : 'text-5xl'} font-extrabold tracking-wide`} role="img" aria-label={`Kata ${q.promptText}`}>{q.promptText}</span>}
         <button className="btn btn-secondary relative" onClick={() => say(q.speak)}>
           <span aria-hidden>🔊</span> Dengar
           {wave > 0 && [0, 1].map((r) => (

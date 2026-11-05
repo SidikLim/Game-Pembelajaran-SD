@@ -62,29 +62,34 @@ function stopSpeech() {
   if (current) { current.pause(); current = null; }
 }
 
-function speakSynth(text: string): boolean {
+function speakSynth(text: string, lang: SpeechLang): boolean {
   if (!('speechSynthesis' in window)) return false;
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
+  u.lang = lang === 'id' ? 'id-ID' : 'en-US';
   u.rate = 0.8;
   u.pitch = 1.2;
   window.speechSynthesis.speak(u);
   return true;
 }
 
-/** Ucapkan teks Inggris. true bila ada suara yang diputar (rekaman atau suara perangkat). */
-export function speak(text: string): boolean {
+export type SpeechLang = 'en' | 'id';
+
+/**
+ * Ucapkan teks. true bila ada suara yang diputar (rekaman atau suara perangkat).
+ * Kunci manifest Bahasa Inggris = teksnya; Bahasa Indonesia diberi awalan "id:" (belum ada rekaman, memakai suara perangkat).
+ */
+export function speak(text: string, lang: SpeechLang = 'en'): boolean {
   if (muted) return false;
   stopSpeech();
-  const file = manifest?.[speechKey(text)];
+  const file = manifest?.[lang === 'id' ? `id:${speechKey(text)}` : speechKey(text)];
   if (file) {
     const a = new Audio(`${base()}audio/${file}`);
     current = a;
     // Bila file gagal diputar (rusak/diblokir), jatuh ke suara perangkat.
-    const fallback = () => { if (current === a) { current = null; speakSynth(text); } };
+    const fallback = () => { if (current === a) { current = null; speakSynth(text, lang); } };
     a.addEventListener('error', fallback, { once: true });
     a.play().catch(fallback);
     return true;
   }
-  return speakSynth(text);
+  return speakSynth(text, lang);
 }

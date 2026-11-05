@@ -42,6 +42,24 @@ const ENGLISH: StepDef[] = [
   { tier: 3, step: 11, from: 27, to: 30, title: 'Short Stories', goal: 'Baca cerita bergambar, jawab pertanyaan', challenge: 'story', params: [{ storyLevel: 1 }, { storyLevel: 2 }, { storyLevel: 3 }, { storyLevel: 4 }] },
 ];
 
+const INDONESIA: StepDef[] = [
+  { tier: 1, step: 1, from: 1, to: 3, title: 'Mengenal Huruf', goal: 'Dengarkan huruf, pilih hurufnya', challenge: 'pickMatch',
+    params: [{ pool: 'idLetters', letterSet: 'aiueo', options: 3, lang: 'id' }, { pool: 'idLetters', letterSet: 'abcdefghijklm', options: 3, lang: 'id' }, { pool: 'idLetters', letterSet: 'abcdefghijklmnopqrstuvwxyz', options: 4, lang: 'id' }] },
+  { tier: 1, step: 2, from: 4, to: 6, title: 'Menyusun Suku Kata', goal: 'Susun suku kata menjadi kata', challenge: 'spellingBee',
+    params: [{ syllableGroup: 1, lang: 'id' }, { syllableGroup: 2, lang: 'id' }, { syllableGroup: 3, lang: 'id' }] },
+  { tier: 1, step: 3, from: 7, to: 8, title: 'Menyusun Huruf Menjadi Kata', goal: 'Susun huruf acak menjadi kata', challenge: 'spellingBee',
+    params: [{ wordLength: 4, lang: 'id' }, { wordLength: 5, lang: 'id' }] },
+  { tier: 1, step: 4, from: 9, to: 10, title: 'Membaca Kata dan Kalimat', goal: 'Baca, lalu pilih gambar yang cocok', challenge: 'pickMatch',
+    params: [{ pool: 'idObjects', options: 3, lang: 'id' }, { pool: 'idSentences', options: 3, lang: 'id' }] },
+  { tier: 2, step: 5, from: 11, to: 13, title: 'Kata Berimbuhan', goal: 'Kenali awalan dan akhiran', challenge: 'comingSoon' },
+  { tier: 2, step: 6, from: 14, to: 16, title: 'Lawan dan Persamaan Kata', goal: 'Pasangkan kata yang berlawanan dan bermakna sama', challenge: 'comingSoon' },
+  { tier: 2, step: 7, from: 17, to: 18, title: 'Menyusun Kalimat', goal: 'Susun kata acak menjadi kalimat', challenge: 'comingSoon' },
+  { tier: 2, step: 8, from: 19, to: 20, title: 'Tanda Baca dan Huruf Kapital', goal: 'Lengkapi kalimat dengan tanda baca yang tepat', challenge: 'comingSoon' },
+  { tier: 3, step: 9, from: 21, to: 23, title: 'Kalimat Efektif', goal: 'Pilih kalimat yang tepat', challenge: 'comingSoon' },
+  { tier: 3, step: 10, from: 24, to: 26, title: 'Ide Pokok dan Bacaan', goal: 'Temukan ide pokok paragraf', challenge: 'comingSoon' },
+  { tier: 3, step: 11, from: 27, to: 30, title: 'Puisi, Pantun, dan Cerita', goal: 'Pahami puisi, pantun, dan cerita', challenge: 'comingSoon' },
+];
+
 function build(subject: Subject, defs: StepDef[]): LevelConfig[] {
   const levels: LevelConfig[] = [];
   for (const d of defs) {
@@ -65,8 +83,9 @@ function build(subject: Subject, defs: StepDef[]): LevelConfig[] {
 export const LEVELS: Record<Subject, LevelConfig[]> = {
   math: build('math', MATH),
   english: build('english', ENGLISH),
+  indonesia: build('indonesia', INDONESIA),
 };
 
-export const SUBJECT_LABEL: Record<Subject, string> = { math: 'Matematika', english: 'Bahasa Inggris' };
+export const SUBJECT_LABEL: Record<Subject, string> = { math: 'Matematika', english: 'Bahasa Inggris', indonesia: 'Bahasa Indonesia' };
 
 export const getLevel = (subject: Subject, id: number) => LEVELS[subject].find((l) => l.id === id);

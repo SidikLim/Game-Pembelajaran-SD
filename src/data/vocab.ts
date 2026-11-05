@@ -58,4 +58,4 @@ export const SENTENCES: VocabItem[] = [
   { id: 's11', word: 'He rides a bike', emoji: '🚲' }, { id: 's12', word: 'I brush my teeth', emoji: '🪥' },
 ];
 
-export type PoolName = 'letters' | 'animals' | 'colors' | 'animalsColors' | 'numbers' | 'numbersFruits' | 'family' | 'body' | 'familyBody' | 'sentences';
+export type PoolName = 'letters' | 'animals' | 'colors' | 'animalsColors' | 'numbers' | 'numbersFruits' | 'family' | 'body' | 'familyBody' | 'sentences' | 'idLetters' | 'idObjects' | 'idSentences';
