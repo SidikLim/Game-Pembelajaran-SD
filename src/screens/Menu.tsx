@@ -49,19 +49,25 @@ export function ProfileScreen({ profiles, onPick, onCreate }: { profiles: Profil
   );
 }
 
+const SUBJECT_STYLE: Record<Subject, { icon: string; cls: string }> = {
+  math: { icon: '🔢', cls: 'btn-primary' },
+  english: { icon: '🔤', cls: 'btn-secondary' },
+  indonesia: { icon: '📚', cls: 'btn-accent' },
+};
+
 export function SubjectScreen({ profile, muted, onToggleMute, onPick, onSwitch }: { profile: Profile; muted: boolean; onToggleMute: () => void; onPick: (s: Subject) => void; onSwitch: () => void }) {
   return (
-    <main className="mx-auto flex min-h-full max-w-md flex-col items-center gap-5 px-4 py-6">
+    <main className="mx-auto flex min-h-full max-w-md flex-col items-center gap-3 px-4 py-4">
       <div className="flex w-full justify-between">
         <button className="btn btn-ghost !min-h-[48px]" onClick={onSwitch}>👤 {profile.name}</button>
         <button className="btn btn-ghost !min-h-[48px]" onClick={onToggleMute} aria-pressed={muted} aria-label={muted ? 'Nyalakan suara' : 'Matikan suara'}>{muted ? '🔇' : '🔊'}</button>
       </div>
-      <Mascot state="idle" hat={profile.hat} size={150} />
-      <h1 className="text-3xl font-extrabold">Mau belajar apa hari ini?</h1>
-      {(['math', 'english'] as Subject[]).map((s) => (
+      <Mascot state="idle" hat={profile.hat} size={110} />
+      <h1 className="text-2xl font-extrabold">Mau belajar apa hari ini?</h1>
+      {(['math', 'english', 'indonesia'] as Subject[]).map((s) => (
         <motion.button key={s} whileTap={{ scale: 0.96 }} whileHover={{ scale: 1.02 }} onClick={() => onPick(s)}
-          className={`btn w-full !min-h-[96px] !text-3xl ${s === 'math' ? 'btn-primary' : 'btn-secondary'}`}>
-          {s === 'math' ? '🔢' : '🔤'} {SUBJECT_LABEL[s]}
+          className={`btn w-full !min-h-[76px] !text-2xl ${SUBJECT_STYLE[s].cls}`}>
+          <span aria-hidden>{SUBJECT_STYLE[s].icon}</span> {SUBJECT_LABEL[s]}
         </motion.button>
       ))}
     </main>

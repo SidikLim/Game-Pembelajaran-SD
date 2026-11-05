@@ -16,5 +16,6 @@ body {
 }
 .btn-primary { @apply bg-leaf-700; }
 .btn-secondary { @apply bg-sea-600; }
+.btn-accent { @apply bg-coral-600; }
 .btn-ghost { @apply bg-white text-sea-800; }
 .card { @apply rounded-3xl bg-white/90 p-5 shadow-chunky; }

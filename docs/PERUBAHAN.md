@@ -2,6 +2,26 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.9.0 — Mata pelajaran ketiga: Bahasa Indonesia, Tingkat 1 (2026-11-05)
+### Ditambahkan
+- **Bahasa Indonesia** muncul sebagai pilihan ketiga (tombol 📚) dengan 30 level; **Level 1–10 (kelas 1–2) bisa dimainkan**, Level 11–30 tampil "segera hadir" dengan judul rencananya. Rincian materi, contoh soal, dan pertanyaan terbuka untuk guru: `docs/requirements/bahasa-indonesia.md`.
+- L1–3 **Mengenal huruf** (vokal → a–m → a–z): dengar nama huruf + kata contoh, pilih hurufnya (komponen `PickMatch`).
+- L4–6 **Menyusun suku kata** (ba-ju, ru-mah, se-pa-tu) dan L7–8 **menyusun huruf** (4 dan 5 huruf) memakai `SpellingBee` yang kini bekerja dengan token huruf atau suku kata, huruf kecil, dan bahasa `id`.
+- L9 **membaca kata benda** → pilih gambar, L10 **membaca kalimat sederhana** → pilih gambar (`PickMatch`; kalimat tidak dikapitalkan semua).
+- Bank materi di `src/data/indonesia.ts` (26 huruf + kata contoh, 24 benda, 12 kalimat, 21 kata susun huruf, 26 kata susun suku kata).
+- Pemutar suara mendukung bahasa (`speak(teks, 'id')` → suara perangkat `id-ID`); nama huruf diucapkan lewat ejaan namanya ("b" → "be"). Kunci manifest berawalan `id:` disiapkan untuk rekaman nanti.
+- Tombol mata pelajaran dipadatkan agar tiga pilihan muat di layar 360×640.
+
+### Diuji
+- 41 tes otomatis (bank data, pembangkit soal huruf/kata/kalimat/suku kata, 30 level per mata pelajaran, aturan buka-kunci).
+- Browser: Indonesia L1–10 dimainkan sampai tamat di 412×800 dan 360×640, tanpa error dan tanpa scroll, termasuk keadaan petunjuk muncul pada soal susun kata. Semua level susun kata Inggris (L9–10, L14–16) dan Indonesia (L4–8) diukur ulang dengan petunjuk tampil: muat.
+- axe-core: 0 pelanggaran, termasuk layar pilih mata pelajaran dan 5 tampilan Indonesia (dua kali pindai).
+
+### Perlu diperhatikan
+- **Isi materi belum ditinjau guru** (lihat pertanyaan di dokumen kebutuhan, mis. contoh huruf Q dan X).
+- **Suara Indonesia memakai suara bawaan perangkat**; belum ada rekaman dan generatornya belum mencakup Bahasa Indonesia.
+- Gambar kata pada susun kata diberi sedikit ruang ekstra agar emoji tidak tertimpa tombol "Dengar".
+
 ## v0.8.0 — Ikon PWA PNG dan audit Lighthouse/aksesibilitas (2026-11-03)
 ### Ditambahkan
 - Ikon PNG: 192, 512 (`any`), 512 maskable, dan `apple-touch-icon` 180 px (dibuat dari `public/icon.svg` dengan `scripts/generate-icons.mjs`); manifest memuat semuanya + kategori `education`/`kids`; `index.html` mendapat meta deskripsi, `apple-touch-icon`, dan meta aplikasi web.

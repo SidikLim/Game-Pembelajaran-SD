@@ -1,5 +1,6 @@
 import { ANIMALS, BODY, COLORS, FAMILY, FRUITS, SENTENCES, LETTERS, LETTER_WORDS, NUMBERS, type PoolName, type VocabItem } from '../data/vocab';
 import { FILL_BANK, STORY_BANK } from '../data/english3';
+import { ID_LETTERS, ID_LETTER_NAME, ID_LETTER_WORDS, ID_OBJECTS, ID_SENTENCES, ID_SYLLABLES, ID_WORDS } from '../data/indonesia';
 import { randInt, shuffle, type Rng } from './random';
 
 export interface SumQuestion { a: number; b: number; answer: number }
@@ -60,21 +61,42 @@ export const WORDS: WordEntry[] = [
   { word: 'BALLOON', emoji: '🎈', id: 'balloon' },
 ];
 
-export interface SpellQuestion { entry: WordEntry; letters: string[] }
+/** `tokens` = urutan benar (huruf atau suku kata); `letters` = token yang sudah diacak. */
+export interface SpellQuestion { entry: WordEntry; letters: string[]; tokens: string[] }
 
-/** Acak huruf; dijamin urutannya berbeda dari kata asli bila memungkinkan. */
-export function scramble(rng: Rng, word: string): string[] {
-  const chars = word.split('');
-  if (new Set(chars).size < 2) return chars;
-  let out = shuffle(rng, chars);
+/** Acak token; dijamin urutannya berbeda dari aslinya bila memungkinkan. */
+export function scrambleTokens(rng: Rng, tokens: string[]): string[] {
+  if (new Set(tokens).size < 2) return [...tokens];
+  const word = tokens.join('');
+  let out = shuffle(rng, tokens);
   let guard = 0;
-  while (out.join('') === word && guard++ < 50) out = shuffle(rng, chars);
+  while (out.join('') === word && guard++ < 50) out = shuffle(rng, tokens);
   return out;
+}
+
+/** Acak huruf sebuah kata. */
+export function scramble(rng: Rng, word: string): string[] {
+  return scrambleTokens(rng, word.split(''));
 }
 
 export function makeSpellQuestions(rng: Rng, count: number, wordLength: number): SpellQuestion[] {
   const pool = shuffle(rng, WORDS.filter((w) => w.word.length === wordLength));
-  return pool.slice(0, count).map((entry) => ({ entry, letters: scramble(rng, entry.word) }));
+  return pool.slice(0, count).map((entry) => ({ entry, letters: scramble(rng, entry.word), tokens: entry.word.split('') }));
+}
+
+/** Susun huruf Bahasa Indonesia (kata 4 atau 5 huruf, huruf kecil). */
+export function makeIdSpellQuestions(rng: Rng, count: number, wordLength: number): SpellQuestion[] {
+  const pool = shuffle(rng, ID_WORDS.filter((w) => w.word.length === wordLength));
+  return pool.slice(0, count).map((entry) => ({ entry, letters: scramble(rng, entry.word), tokens: entry.word.split('') }));
+}
+
+/** Susun suku kata menjadi kata. group 1: ba-ju, 2: ru-mah, 3: se-pa-tu. */
+export function makeSyllableQuestions(rng: Rng, count: number, group: 1 | 2 | 3): SpellQuestion[] {
+  return shuffle(rng, ID_SYLLABLES[group]).slice(0, count).map((w) => ({
+    entry: { word: w.word, emoji: w.emoji, id: w.word },
+    letters: scrambleTokens(rng, w.syllables),
+    tokens: w.syllables,
+  }));
 }
 
 export interface PickOption { id: string; text?: string; emoji?: string; color?: string; count?: number; speak: string }
@@ -93,7 +115,7 @@ export interface PickQuestion {
 
 const asOption = (v: VocabItem): PickOption => ({ id: v.id, emoji: v.emoji, color: v.color, count: v.count, speak: v.word });
 
-function poolItems(pool: Exclude<PoolName, 'letters'>): VocabItem[] {
+function poolItems(pool: Exclude<PoolName, 'letters' | 'idLetters'>): VocabItem[] {
   switch (pool) {
     case 'animals': return ANIMALS;
     case 'colors': return COLORS;
@@ -104,19 +126,34 @@ function poolItems(pool: Exclude<PoolName, 'letters'>): VocabItem[] {
     case 'body': return BODY;
     case 'familyBody': return [...FAMILY, ...BODY];
     case 'sentences': return SENTENCES;
+    case 'idObjects': return ID_OBJECTS;
+    case 'idSentences': return ID_SENTENCES;
   }
 }
 
 /** Soal pilih-yang-cocok: huruf (dengar -> pilih huruf) atau kata (baca/dengar -> pilih gambar). */
-export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optionCount: number, letterCount = 26): PickQuestion[] {
+export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optionCount: number, letterCount = 26, letterSet?: string): PickQuestion[] {
   const out: PickQuestion[] = [];
   let lastId = '';
-  const ids = pool === 'letters' ? LETTERS.slice(0, letterCount) : poolItems(pool).map((i) => i.id);
+  const isLetters = pool === 'letters' || pool === 'idLetters';
+  const letterIds = letterSet ? letterSet.toUpperCase().split('') : (pool === 'idLetters' ? ID_LETTERS : LETTERS).slice(0, letterCount);
+  const ids = isLetters ? letterIds : poolItems(pool as Exclude<PoolName, 'letters' | 'idLetters'>).map((i) => i.id);
   while (out.length < count) {
     const answerId = ids[randInt(rng, 0, ids.length - 1)];
     if (answerId === lastId && ids.length > 1) continue;
     lastId = answerId;
-    if (pool === 'letters') {
+    if (pool === 'idLetters') {
+      const lw = ID_LETTER_WORDS[answerId];
+      const name = ID_LETTER_NAME[answerId.toLowerCase()];
+      const others = shuffle(rng, ids.filter((l) => l !== answerId)).slice(0, optionCount - 1);
+      out.push({
+        speak: `${name}. ${lw.word}`,
+        options: shuffle(rng, [answerId, ...others]).map((l) => ({ id: l, text: l.toLowerCase(), speak: ID_LETTER_NAME[l.toLowerCase()] })),
+        answerId,
+        hint: `Huruf ini ada di kata ${lw.word.toUpperCase()} ${lw.emoji}`,
+        instruction: 'Dengarkan, lalu pilih hurufnya 👂',
+      });
+    } else if (pool === 'letters') {
       const lw = LETTER_WORDS[answerId];
       const others = shuffle(rng, ids.filter((l) => l !== answerId)).slice(0, optionCount - 1);
       out.push({
@@ -134,12 +171,13 @@ export function makePickQuestions(rng: Rng, count: number, pool: PoolName, optio
       const sameKind = items.filter((i) => i.id !== answerId && (pool !== 'numbersFruits' && pool !== 'animalsColors' ? true : kind(i) === kind(answer)));
       const others = shuffle(rng, sameKind).slice(0, optionCount - 1);
       const listening = pool === 'sentences';
+      const keepCase = pool === 'idSentences'; // kalimat dibaca apa adanya, bukan huruf kapital semua
       out.push({
-        promptText: listening ? undefined : answer.word.toUpperCase(),
+        promptText: listening ? undefined : keepCase ? answer.word : answer.word.toUpperCase(),
         speak: answer.word,
         options: shuffle(rng, [answer, ...others]).map(asOption),
         answerId,
-        hint: listening ? `Kalimatnya: "${answer.word}"` : 'Tekan 🔊 untuk mendengar kata, lalu ketuk gambar untuk mendengar namanya',
+        hint: listening ? `Kalimatnya: "${answer.word}"` : keepCase ? 'Baca pelan-pelan, atau tekan 🔊 untuk mendengarkan kalimatnya' : 'Tekan 🔊 untuk mendengar kata, lalu ketuk gambar untuk mendengar namanya',
         instruction: listening ? 'Dengarkan kalimatnya, lalu pilih gambarnya 👂' : 'Pilih gambar yang cocok 👆',
       });
     }

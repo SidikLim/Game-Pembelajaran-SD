@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { seeded } from './random';
 import { FILL_BANK, STORY_BANK } from '../data/english3';
-import { fmtDec, makeArithQuestions, makeFillQuestions, makePrepQuestions, makeStoryQuestions, type ArithKind, fmtTime, makeClockQuestions, makeFractionQuestions, makeMulQuestions, makeShareQuestions, makeVerbQuestions, makeCountQuestions, makePickQuestions, makeShapePuzzles, makeSubQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
+import { ID_LETTER_NAME, ID_LETTER_WORDS, ID_OBJECTS, ID_SENTENCES, ID_SYLLABLES, ID_WORDS } from '../data/indonesia';
+import { LEVELS } from '../data/levels';
+import { makeIdSpellQuestions, makeSyllableQuestions, fmtDec, makeArithQuestions, makeFillQuestions, makePrepQuestions, makeStoryQuestions, type ArithKind, fmtTime, makeClockQuestions, makeFractionQuestions, makeMulQuestions, makeShareQuestions, makeVerbQuestions, makeCountQuestions, makePickQuestions, makeShapePuzzles, makeSubQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
 import { scoreFor, starsFor } from './scoring';
 import { isUnlocked, recordResult } from './progress';
 import type { Profile } from './types';
@@ -296,6 +298,74 @@ describe('Tingkat 3 Inggris', () => {
       });
       makePrepQuestions(seeded(seed), 5, ['in', 'on', 'under', 'behind'], 4).forEach((q) => expect(new Set(q.options).size).toBe(4));
     }
+  });
+});
+
+describe('Bahasa Indonesia (Tingkat 1)', () => {
+  it('data bank konsisten', () => {
+    expect(Object.keys(ID_LETTER_NAME)).toHaveLength(26);
+    expect(Object.keys(ID_LETTER_WORDS)).toHaveLength(26);
+    for (const list of [ID_OBJECTS, ID_SENTENCES]) {
+      expect(new Set(list.map((v) => v.id)).size).toBe(list.length);
+      expect(new Set(list.map((v) => v.emoji)).size).toBe(list.length); // satu gambar unik per butir
+    }
+    for (const g of [1, 2, 3] as const) {
+      expect(ID_SYLLABLES[g].length).toBeGreaterThanOrEqual(5);
+      ID_SYLLABLES[g].forEach((w) => {
+        expect(w.syllables.join('')).toBe(w.word);
+        expect(w.syllables).toHaveLength(g === 3 ? 3 : 2);
+      });
+    }
+    for (const n of [4, 5]) expect(ID_WORDS.filter((w) => w.word.length === n).length).toBeGreaterThanOrEqual(5);
+  });
+  it('soal huruf: hanya dari letterSet, pilihan unik, teks huruf kecil, ucapan memakai nama huruf', () => {
+    for (let seed = 1; seed <= 40; seed++) {
+      makePickQuestions(seeded(seed), 5, 'idLetters', 3, 26, 'aiueo').forEach((q) => {
+        expect(new Set(q.options.map((o) => o.id)).size).toBe(3);
+        expect(q.options.map((o) => o.id)).toContain(q.answerId);
+        q.options.forEach((o) => { expect('AIUEO').toContain(o.id); expect(o.text).toBe(o.id.toLowerCase()); expect(o.speak).toBe(ID_LETTER_NAME[o.id.toLowerCase()]); });
+      });
+      makePickQuestions(seeded(seed), 5, 'idLetters', 4, 26, 'abcdefghijklmnopqrstuvwxyz').forEach((q) => expect(new Set(q.options.map((o) => o.id)).size).toBe(4));
+    }
+  });
+  it('soal kata/kalimat: pilihan unik memuat jawaban; kalimat tidak dikapitalkan semua', () => {
+    for (const pool of ['idObjects', 'idSentences'] as const) {
+      for (let seed = 1; seed <= 30; seed++) {
+        makePickQuestions(seeded(seed), 5, pool, 3).forEach((q) => {
+          expect(new Set(q.options.map((o) => o.id)).size).toBe(3);
+          expect(q.options.map((o) => o.id)).toContain(q.answerId);
+          if (pool === 'idSentences') expect(q.promptText).not.toBe(q.promptText!.toUpperCase());
+        });
+      }
+    }
+  });
+  it('susun suku kata dan huruf: urutan benar, kepingan = permutasi, tidak sama dengan urutan benar', () => {
+    for (let seed = 1; seed <= 40; seed++) {
+      for (const g of [1, 2, 3] as const) {
+        const qs = makeSyllableQuestions(seeded(seed), 5, g);
+        expect(new Set(qs.map((q) => q.entry.word)).size).toBe(5);
+        qs.forEach((q) => {
+          expect(q.tokens.join('')).toBe(q.entry.word);
+          expect([...q.letters].sort()).toEqual([...q.tokens].sort());
+          expect(q.letters.join('-')).not.toBe(q.tokens.join('-'));
+        });
+      }
+      for (const n of [4, 5]) makeIdSpellQuestions(seeded(seed), 5, n).forEach((q) => {
+        expect(q.entry.word).toHaveLength(n);
+        expect(q.letters.join('')).not.toBe(q.entry.word);
+        expect([...q.letters].sort().join('')).toBe([...q.tokens].sort().join(''));
+      });
+    }
+  });
+  it('30 level per mata pelajaran; Indonesia L1-10 bisa dimainkan, L11-30 "segera hadir"', () => {
+    for (const subj of ['math', 'english', 'indonesia'] as const) {
+      expect(LEVELS[subj].map((l) => l.id)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1));
+      LEVELS[subj].forEach((l) => expect(l.tier).toBe(l.id <= 10 ? 1 : l.id <= 20 ? 2 : 3));
+    }
+    expect(LEVELS.indonesia.filter((l) => l.challenge !== 'comingSoon').map((l) => l.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    expect(isUnlocked(profile(), 'indonesia', 1)).toBe(true);
+    expect(isUnlocked(profile(), 'indonesia', 2)).toBe(false);
+    expect(isUnlocked(recordResult(profile(), 'indonesia', 10, 1, 100), 'indonesia', 11)).toBe(true);
   });
 });
 
