@@ -1,6 +1,6 @@
 # Kebutuhan: Mata Pelajaran Bahasa Indonesia
 
-Status: **irisan pertama (Tingkat 1, Level 1–10) dibangun di v0.9.0; Tingkat 2–3 masih rencana.**
+Status: **Tingkat 1 (Level 1–10) dibangun di v0.9.0, Tingkat 2 (Level 11–20) di v0.10.0; Tingkat 3 masih rencana.**
 Isi materi **belum ditinjau guru**: tolong koreksi dokumen ini sebelum Tingkat 2–3 dibuat.
 
 ## 1. Tujuan
@@ -26,13 +26,28 @@ Bank materi: `src/data/indonesia.ts` (26 huruf + kata contoh, 24 benda, 12 kalim
 
 Aturan umum (sama dengan mata pelajaran lain): 5 soal per level; 3★ bila salah ≤ 1, 2★ bila ≤ 3, selain itu 1★; salah boleh diulang tanpa batas; petunjuk muncul setelah 2 kali salah; level berikutnya terbuka setelah level sebelumnya selesai.
 
-## 3. Tingkat 2 — Kelas 3–4 (rencana, tampil "segera hadir")
-| Level | Materi | Mekanik yang diusulkan |
-|---|---|---|
-| 11–13 | Kata berimbuhan (ber-, me-, -an): memilih imbuhan yang tepat | Pilih jawaban / melengkapi kata (komponen `FillBlank`) |
-| 14–16 | Lawan kata dan persamaan kata | Pilih pasangan (komponen `PickMatch` versi teks) |
-| 17–18 | Menyusun kata acak menjadi kalimat | **Mekanik baru**: susun kata (seperti Spelling Bee tetapi per kata) |
-| 19–20 | Huruf kapital dan tanda baca (. , ? !) | Melengkapi kalimat |
+## 3. Tingkat 2 — Kelas 3–4 (dibangun)
+| Level | Materi | Mekanik | Contoh soal |
+|---|---|---|---|
+| 11 | Awalan **ber-** | Lengkapi kalimat, pilih kata (3 pilihan) | "Adik ___ bola di halaman." → **bermain** (bukan *memain*, *dimain*) |
+| 12 | Awalan **me-** (peluluhan huruf: menulis, menyapu, menyiram, menari, mengambil, membaca, memasak, membeli) | Lengkapi kalimat | "Ayah ___ halaman setiap pagi." → **menyapu** |
+| 13 | Akhiran **-an** (kata benda: mainan, makanan, minuman, tulisan, lukisan, bacaan, nyanyian, hiasan) | Lengkapi kalimat | "Adik punya banyak ___ baru." → **mainan** |
+| 14 | **Lawan kata** (12 pasang) | Lengkapi kalimat | Lawan kata dari "besar" adalah ___ → **kecil** |
+| 15 | **Persamaan kata** (9 pasang) | Lengkapi kalimat | Persamaan kata dari "pintar" adalah ___ → **pandai** |
+| 16 | Campuran lawan + persamaan kata | Lengkapi kalimat | (acak dari dua bank) |
+| 17 | Menyusun kalimat 3 kata | **Mekanik baru (varian `SpellingBee`)**: susun kata acak, ada gambar sebagai petunjuk | "memasak / Ibu / nasi." → **Ibu memasak nasi.** |
+| 18 | Menyusun kalimat 4–5 kata | Susun kata | "Nenek menanam bunga di kebun." |
+| 19 | Tanda baca akhir kalimat (. ? !) | Pilih tanda baca | "Siapa namamu___" → **?** |
+| 20 | Huruf kapital (nama orang, kota, hari) dan koma pada rincian | Lengkapi kalimat | "Aku tinggal di kota ___." → **Bandung** (bukan *bandung*, *BANDUNG*) |
+
+Bank materi: `src/data/indonesia2.ts` (8 butir per imbuhan, 12 lawan kata, 9 persamaan kata, 8 tanda baca, 8 kapital/koma, 7 + 9 kalimat untuk disusun). Mekanik, hitungan bintang, dan petunjuk sama dengan Tingkat 1; setiap butir punya petunjuk khusus yang muncul setelah 2 kali salah. Kalimat yang benar dibacakan (suara perangkat) setelah dijawab benar.
+
+Pertanyaan untuk guru khusus Tingkat 2:
+1. Pengecoh imbuhan sengaja berupa bentuk yang keliru (mis. *memain*, *dimain*) agar jelas salah; adakah yang sebaiknya diganti karena justru bentuk baku atau membingungkan (mis. *bertarian*, *bersiram*)?
+2. Peluluhan huruf pada me- (menyapu, menyiram, menari) diajarkan di kelas 3–4, atau terlalu awal?
+3. Pasangan lawan/persamaan kata (mis. "bersih/kotor", "cepat/lekas", "ibu/bunda") — adakah yang kurang lazim untuk anak?
+4. Soal huruf kapital memakai pengecoh huruf kecil dan KAPITAL SEMUA; apakah cukup, atau perlu menambah kasus (awal kalimat, judul)?
+5. Kalimat untuk disusun memakai titik pada kata terakhir dan kapital pada kata pertama sebagai petunjuk alami; apakah itu mengurangi tantangan yang dimaksud?
 
 ## 4. Tingkat 3 — Kelas 5–6 (rencana, tampil "segera hadir")
 | Level | Materi | Mekanik yang diusulkan |
@@ -53,8 +68,8 @@ Aturan umum (sama dengan mata pelajaran lain): 5 soal per level; 3★ bila salah
 4. Kata "kelinci", "keranjang", dan "pesawat" (Level 6) memadai untuk kelas 1–2, atau terlalu sulit?
 5. Daftar kosakata dan kalimat di `src/data/indonesia.ts` — tolong tambah/koreksi.
 
-## 7. Kriteria penerimaan (Tingkat 1)
-- Mata pelajaran ketiga muncul di pilihan; peta level menampilkan 10 level terbuka berurutan + 20 level "segera hadir".
-- Level 1–10 dapat dimainkan sampai tamat di layar 412×800 dan 360×640 tanpa scroll dan tanpa error.
+## 7. Kriteria penerimaan (Tingkat 1–2)
+- Mata pelajaran ketiga muncul di pilihan; peta level menampilkan 20 level terbuka berurutan (Tingkat 1–2) + 10 level "segera hadir".
+- Level 1–20 dapat dimainkan sampai tamat di layar 412×800 dan 360×640 tanpa scroll dan tanpa error.
 - Aksesibilitas: 0 pelanggaran axe-core pada layar baru.
 - Tes otomatis mencakup bank data, pembangkit soal, dan aturan buka-kunci.

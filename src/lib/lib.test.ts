@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { seeded } from './random';
 import { FILL_BANK, STORY_BANK } from '../data/english3';
+import { ID_FILL_BANK, ID_SENTENCE_GROUPS, type IdFillBank } from '../data/indonesia2';
 import { ID_LETTER_NAME, ID_LETTER_WORDS, ID_OBJECTS, ID_SENTENCES, ID_SYLLABLES, ID_WORDS } from '../data/indonesia';
 import { LEVELS } from '../data/levels';
-import { makeIdSpellQuestions, makeSyllableQuestions, fmtDec, makeArithQuestions, makeFillQuestions, makePrepQuestions, makeStoryQuestions, type ArithKind, fmtTime, makeClockQuestions, makeFractionQuestions, makeMulQuestions, makeShareQuestions, makeVerbQuestions, makeCountQuestions, makePickQuestions, makeShapePuzzles, makeSubQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
+import { makeIdFillQuestions, makeSentenceQuestions, makeIdSpellQuestions, makeSyllableQuestions, fmtDec, makeArithQuestions, makeFillQuestions, makePrepQuestions, makeStoryQuestions, type ArithKind, fmtTime, makeClockQuestions, makeFractionQuestions, makeMulQuestions, makeShareQuestions, makeVerbQuestions, makeCountQuestions, makePickQuestions, makeShapePuzzles, makeSubQuestions, makeSpellQuestions, makeSumQuestions, scramble } from './questions';
 import { scoreFor, starsFor } from './scoring';
 import { isUnlocked, recordResult } from './progress';
 import type { Profile } from './types';
@@ -362,10 +363,57 @@ describe('Bahasa Indonesia (Tingkat 1)', () => {
       expect(LEVELS[subj].map((l) => l.id)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1));
       LEVELS[subj].forEach((l) => expect(l.tier).toBe(l.id <= 10 ? 1 : l.id <= 20 ? 2 : 3));
     }
-    expect(LEVELS.indonesia.filter((l) => l.challenge !== 'comingSoon').map((l) => l.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    expect(LEVELS.indonesia.filter((l) => l.challenge !== 'comingSoon').map((l) => l.id)).toEqual(Array.from({ length: 20 }, (_, i) => i + 1));
     expect(isUnlocked(profile(), 'indonesia', 1)).toBe(true);
     expect(isUnlocked(profile(), 'indonesia', 2)).toBe(false);
     expect(isUnlocked(recordResult(profile(), 'indonesia', 10, 1, 100), 'indonesia', 11)).toBe(true);
+  });
+});
+
+describe('Bahasa Indonesia (Tingkat 2)', () => {
+  const banks = Object.keys(ID_FILL_BANK) as IdFillBank[];
+  it('bank rumpang valid: satu "___", jawaban tidak ada di pengecoh, 3 pilihan unik, petunjuk terisi', () => {
+    for (const b of banks) {
+      expect(ID_FILL_BANK[b].length).toBeGreaterThanOrEqual(8);
+      ID_FILL_BANK[b].forEach((f) => {
+        expect(f.text.split('___')).toHaveLength(2);
+        expect(f.wrongs).not.toContain(f.answer);
+        expect(new Set([f.answer, ...f.wrongs]).size).toBe(3);
+        expect(f.hint.length).toBeGreaterThan(10);
+      });
+    }
+  });
+  it('generator rumpang: 5 soal unik, jawaban ada di pilihan, petunjuk dibawa', () => {
+    for (let seed = 1; seed <= 30; seed++) for (const b of banks) {
+      const qs = makeIdFillQuestions(seeded(seed), 5, b);
+      expect(new Set(qs.map((q) => q.text)).size).toBe(5);
+      qs.forEach((q) => { expect(q.options).toContain(q.answer); expect(q.hint).toBeTruthy(); });
+    }
+  });
+  it('kalimat untuk disusun: kata pertama kapital, diakhiri titik, jumlah kata sesuai kelompok, hasil acak berbeda', () => {
+    for (const g of [1, 2] as const) {
+      ID_SENTENCE_GROUPS[g].forEach((s) => {
+        const w = s.text.split(' ');
+        expect(w[0][0]).toBe(w[0][0].toUpperCase());
+        expect(s.text.endsWith('.')).toBe(true);
+        if (g === 1) expect(w).toHaveLength(3); else expect(w.length).toBeGreaterThanOrEqual(4);
+      });
+      expect(new Set(ID_SENTENCE_GROUPS[g].map((s) => s.emoji)).size).toBe(ID_SENTENCE_GROUPS[g].length);
+    }
+    for (let seed = 1; seed <= 40; seed++) for (const g of [1, 2] as const) {
+      const qs = makeSentenceQuestions(seeded(seed), 5, g);
+      expect(new Set(qs.map((q) => q.entry.word)).size).toBe(5);
+      qs.forEach((q) => {
+        expect(q.tokens.join(' ')).toBe(q.entry.word);
+        expect([...q.letters].sort()).toEqual([...q.tokens].sort());
+        expect(q.letters.join(' ')).not.toBe(q.entry.word);
+      });
+    }
+  });
+  it('Tingkat 2 terbuka berurutan dan Level 21 masih "segera hadir"', () => {
+    expect(isUnlocked(profile(), 'indonesia', 11)).toBe(false);
+    expect(isUnlocked(recordResult(profile(), 'indonesia', 10, 1, 100), 'indonesia', 11)).toBe(true);
+    expect(LEVELS.indonesia.find((l) => l.id === 21)!.challenge).toBe('comingSoon');
   });
 });
 

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
-import { makeFillQuestions } from '../lib/questions';
+import { makeFillQuestions, makeIdFillQuestions } from '../lib/questions';
 import { seeded } from '../lib/random';
 import { sfx, speak } from '../lib/audio';
 import type { ChallengeProps } from './types';
@@ -11,10 +11,12 @@ const HINT: Record<1 | 2 | 3, string> = {
   3: 'Lihat subjeknya: banyak (they, we, birds) atau satu (he, she, it, my brother)?',
 };
 
-/** Melengkapi kalimat rumpang dengan subject–verb yang tepat. */
+/** Melengkapi kalimat rumpang: subject–verb (Inggris, fillTier) atau imbuhan/lawan kata/tanda baca/kapital (Indonesia, fillBank). */
 export function FillBlank({ level, index, seed, onAnswer }: ChallengeProps) {
   const tier = level.params.fillTier ?? 1;
-  const q = useMemo(() => makeFillQuestions(seeded(seed), level.questions, tier)[index], [level, index, seed, tier]);
+  const { fillBank, lang = 'en' } = level.params;
+  const q = useMemo(() => (fillBank ? makeIdFillQuestions(seeded(seed), level.questions, fillBank) : makeFillQuestions(seeded(seed), level.questions, tier))[index], [level, index, seed, tier, fillBank]);
+  const longest = Math.max(...q.options.map((o) => o.length));
   const [wrongPicks, setWrongPicks] = useState<string[]>([]);
   const [picked, setPicked] = useState<string | null>(null);
   const [locked, setLocked] = useState(false);
@@ -24,7 +26,7 @@ export function FillBlank({ level, index, seed, onAnswer }: ChallengeProps) {
     if (locked || wrongPicks.includes(w)) return;
     setPicked(w);
     const ok = w === q.answer;
-    if (ok) { setLocked(true); if (!speak(q.text.replace('___', w))) sfx.tap(); } else { setWrongPicks((x) => [...x, w]); sfx.tap(); }
+    if (ok) { setLocked(true); if (!speak(q.text.replace('___', w), lang)) sfx.tap(); } else { setWrongPicks((x) => [...x, w]); sfx.tap(); }
     onAnswer(ok);
   };
 
@@ -41,19 +43,19 @@ export function FillBlank({ level, index, seed, onAnswer }: ChallengeProps) {
           {after}
         </p>
       </div>
-      <p className="text-base font-bold">Pilih kata yang tepat 👇</p>
+      <p className="text-base font-bold">{q.options.every((o) => o.length <= 1) ? 'Pilih tanda baca yang tepat 👇' : 'Pilih kata yang tepat 👇'}</p>
       {wrongPicks.length >= 2 && (
         <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-sand-200 px-3 py-1 text-center text-base font-bold">
-          Petunjuk: {HINT[tier]}
+          Petunjuk: {q.hint ?? HINT[tier]}
         </motion.p>
       )}
-      <div className="grid w-full grid-cols-3 gap-2">
+      <div className={`grid w-full gap-2 ${longest > 12 ? 'grid-cols-1' : longest > 6 ? 'grid-cols-2' : 'grid-cols-3'}`}>
         {q.options.map((w) => {
           const wrong = wrongPicks.includes(w);
           return (
             <motion.button key={w} onClick={() => choose(w)} disabled={wrong || locked} whileTap={{ scale: 0.95 }} data-choice=""
               animate={picked === w && wrong ? { x: [0, -10, 10, -6, 6, 0] } : {}}
-              className={`btn btn-secondary !min-h-[60px] !px-1 !text-xl ${wrong ? 'opacity-30' : ''} ${locked && w === q.answer ? '!bg-leaf-700' : ''}`}>{w}</motion.button>
+              className={`btn btn-secondary !min-h-[60px] !px-1 ${longest <= 1 ? '!text-5xl' : '!text-xl'} ${wrong ? 'opacity-30' : ''} ${locked && w === q.answer ? '!bg-leaf-700' : ''}`}>{w}</motion.button>
           );
         })}
       </div>
