@@ -2,6 +2,22 @@
 
 Format: terbaru di atas. Setiap perubahan fitur/perilaku **wajib dicatat di sini**.
 
+## v0.10.0 — Bahasa Indonesia Tingkat 2, Level 11–20 (2026-11-09)
+### Ditambahkan
+- **L11–13 Kata berimbuhan** (ber-, me-, -an), **L14–16 Lawan dan persamaan kata**, **L19–20 Tanda baca dan huruf kapital**: soal rumpang memakai `FillBlank` yang kini mendukung bank Bahasa Indonesia (`params.fillBank`), petunjuk khusus per butir, ucapan berbahasa Indonesia, dan tata letak pilihan menyesuaikan panjang kata (3 kolom / 2 kolom). Tombol tanda baca (. ? !) berukuran besar dan instruksinya "Pilih tanda baca yang tepat".
+- **L17–18 Menyusun kalimat**: `SpellingBee` kini bisa menyusun kata menjadi kalimat (`params.sentenceGroup`): kepingan berupa kata, kotak jawaban dan kepingan membungkus ke baris berikutnya, ada gambar sebagai petunjuk, kata pertama diberikan setelah 2 kali salah, dan tombol "Dengar" membacakan kalimat.
+- Bank materi baru `src/data/indonesia2.ts`; mata pelajaran Bahasa Indonesia sekarang punya 20 level yang bisa dimainkan, Level 21–30 masih "segera hadir".
+- Dokumen kebutuhan diperbarui dengan tabel Tingkat 2 dan pertanyaan khusus untuk guru.
+
+### Diuji
+- 45 tes otomatis: validitas bank rumpang (satu "___", pengecoh berbeda dari jawaban, petunjuk terisi), generator, kalimat (kapital awal, titik akhir, hasil acak berbeda), dan aturan buka-kunci Tingkat 2.
+- Browser: Level 11–20 dimainkan sampai tamat di 412×800 dan 360×640 tanpa error dan tanpa scroll (termasuk keadaan petunjuk tampil). Temuan: Level 11–13 kelebihan 18px di 360×640 karena tiga pilihan kata panjang ditumpuk; diperbaiki dengan 2 kolom. Perubahan itu juga diuji pada Inggris Level 21–23: muat.
+- axe-core: 0 pelanggaran pada layar Tingkat 2 (5 tampilan baru, dua kali pindai).
+
+### Perlu diperhatikan
+- **Isi materi belum ditinjau guru**, terutama pengecoh imbuhan dan pasangan kata (lihat dokumen kebutuhan).
+- Suara Indonesia tetap memakai suara bawaan perangkat (belum ada rekaman).
+
 ## v0.9.0 — Mata pelajaran ketiga: Bahasa Indonesia, Tingkat 1 (2026-11-05)
 ### Ditambahkan
 - **Bahasa Indonesia** muncul sebagai pilihan ketiga (tombol 📚) dengan 30 level; **Level 1–10 (kelas 1–2) bisa dimainkan**, Level 11–30 tampil "segera hadir" dengan judul rencananya. Rincian materi, contoh soal, dan pertanyaan terbuka untuk guru: `docs/requirements/bahasa-indonesia.md`.

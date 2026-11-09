@@ -19,7 +19,7 @@ React 18 + TypeScript + Vite, Tailwind CSS, Framer Motion, `vite-plugin-pwa`, `i
 
 ## Status: semua 3 tingkat tersedia (v0.6) — Level 1–30 per mata pelajaran
 Sudah ada: profil pemain lokal, peta 30 level × 2 mata pelajaran, maskot "Kapten Kaka" (4 state), alur level lengkap (intro → soal → umpan balik → kemenangan), bintang, combo, confetti, SFX, PWA, dan 15 jenis tantangan:
-- **Bahasa Indonesia L1–10** — huruf, suku kata, susun kata, membaca kata dan kalimat (`PickMatch`, `SpellingBee`); L11–30 rencana, lihat [`docs/requirements/bahasa-indonesia.md`](docs/requirements/bahasa-indonesia.md)
+- **Bahasa Indonesia L1–20** — huruf, suku kata, susun kata, membaca; imbuhan, lawan/persamaan kata, menyusun kalimat, tanda baca dan huruf kapital (`PickMatch`, `SpellingBee`, `FillBlank`); L21–30 rencana, lihat [`docs/requirements/bahasa-indonesia.md`](docs/requirements/bahasa-indonesia.md)
 - **Matematika L21–30** — kali/bagi lanjut, diskon & desimal, soal cerita petualangan (`ArithQuiz`)
 - **Inggris L21–23** — melengkapi kalimat (`FillBlank`); **L24–26** — preposisi (`Preposition`); **L27–30** — cerita pendek (`StoryQuiz`)
 - **Matematika L11–13** — perkalian dasar, kelompok piring dan kue (`Multiply`)

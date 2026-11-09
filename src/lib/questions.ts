@@ -1,5 +1,6 @@
 import { ANIMALS, BODY, COLORS, FAMILY, FRUITS, SENTENCES, LETTERS, LETTER_WORDS, NUMBERS, type PoolName, type VocabItem } from '../data/vocab';
 import { FILL_BANK, STORY_BANK } from '../data/english3';
+import { ID_FILL_BANK, ID_SENTENCE_GROUPS, type IdFillBank } from '../data/indonesia2';
 import { ID_LETTERS, ID_LETTER_NAME, ID_LETTER_WORDS, ID_OBJECTS, ID_SENTENCES, ID_SYLLABLES, ID_WORDS } from '../data/indonesia';
 import { randInt, shuffle, type Rng } from './random';
 
@@ -435,9 +436,22 @@ export function makePrepQuestions(rng: Rng, count: number, preps: Prep[], option
   return out;
 }
 
-export interface FillQuestion { text: string; answer: string; options: string[]; emoji: string }
+export interface FillQuestion { text: string; answer: string; options: string[]; emoji: string; hint?: string }
 export function makeFillQuestions(rng: Rng, count: number, tier: 1 | 2 | 3): FillQuestion[] {
   return shuffle(rng, FILL_BANK[tier]).slice(0, count).map((f) => ({ text: f.text, answer: f.answer, emoji: f.emoji, options: shuffle(rng, [f.answer, ...f.wrongs]) }));
+}
+
+/** Soal rumpang Bahasa Indonesia Tingkat 2 (imbuhan, lawan/persamaan kata, tanda baca, huruf kapital). */
+export function makeIdFillQuestions(rng: Rng, count: number, bank: IdFillBank): FillQuestion[] {
+  return shuffle(rng, ID_FILL_BANK[bank]).slice(0, count).map((f) => ({ text: f.text, answer: f.answer, emoji: f.emoji, hint: f.hint, options: shuffle(rng, [f.answer, ...f.wrongs]) }));
+}
+
+/** Menyusun kalimat: token = kata (kata pertama berhuruf kapital, titik di kata terakhir). */
+export function makeSentenceQuestions(rng: Rng, count: number, group: 1 | 2): SpellQuestion[] {
+  return shuffle(rng, ID_SENTENCE_GROUPS[group]).slice(0, count).map((s) => {
+    const tokens = s.text.split(' ');
+    return { entry: { word: s.text, emoji: s.emoji, id: s.text }, tokens, letters: scrambleTokens(rng, tokens) };
+  });
 }
 
 export interface StoryQuestion { story: string; emoji: string; question: string; answer: string; options: string[] }

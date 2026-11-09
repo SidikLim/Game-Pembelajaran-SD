@@ -36,7 +36,8 @@ const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
   console.log('peta level:', await scan('peta-level'));
   const games = [['math', 3, 'CountPick'], ['math', 6, 'DragSum'], ['math', 8, 'BalloonSub'], ['math', 10, 'ShapePuzzle'], ['math', 11, 'Multiply'], ['math', 14, 'ShareEqual'], ['math', 17, 'ClockRead'], ['math', 20, 'FractionPick'], ['math', 22, 'ArithQuiz'], ['math', 28, 'ArithQuiz-cerita'],
                  ['english', 1, 'PickMatch-huruf'], ['english', 5, 'PickMatch-warna'], ['english', 9, 'SpellingBee'], ['english', 17, 'ActionVerb'], ['english', 18, 'ActionVerb-baca'], ['english', 21, 'FillBlank'], ['english', 24, 'Preposition'], ['english', 27, 'StoryQuiz'],
-                 ['indonesia', 1, 'ID-huruf'], ['indonesia', 4, 'ID-suku-kata'], ['indonesia', 7, 'ID-susun-huruf'], ['indonesia', 9, 'ID-kata'], ['indonesia', 10, 'ID-kalimat']];
+                 ['indonesia', 1, 'ID-huruf'], ['indonesia', 4, 'ID-suku-kata'], ['indonesia', 7, 'ID-susun-huruf'], ['indonesia', 9, 'ID-kata'], ['indonesia', 10, 'ID-kalimat'],
+                 ['indonesia', 11, 'ID-berimbuhan'], ['indonesia', 14, 'ID-lawan-kata'], ['indonesia', 17, 'ID-susun-kalimat'], ['indonesia', 19, 'ID-tanda-baca'], ['indonesia', 20, 'ID-kapital']];
   for (const [subj, lv, name] of games) {
     await p.goto(BASE); await p.waitForTimeout(250);
     await p.waitForSelector('text=Mau belajar apa'); await p.click({ math: 'text=Matematika', english: 'text=Bahasa Inggris', indonesia: 'text=Bahasa Indonesia' }[subj]);
